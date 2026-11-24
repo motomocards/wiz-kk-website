@@ -23,7 +23,18 @@ body { isolation: isolate; }
 body { overflow-x: clip; }
 .hero-mark { position: relative; display: inline-block; vertical-align: middle; line-height: 0; }
 .hero-mark svg { display: block; }
-.hero-mark::after { content: ""; position: absolute; left: 83.5%; bottom: 0; width: 100vw; height: 20%; background: #46b8f4; }
+.hero-mark::after {
+  content: "";
+  position: absolute;
+  left: 83.5%;
+  bottom: 0;
+  width: calc(100vw - var(--header-side) - 83.5% - var(--page-gutter));
+  height: 100vh;
+  border-right: .152em solid #46b8f4;
+  border-bottom: .152em solid #46b8f4;
+  border-bottom-right-radius: clamp(40px, 8vw, 120px);
+  pointer-events: none;
+}
 
 .intro h2, .heading, h3 { font-weight: 500; }
 .intro h2 { letter-spacing: .015em; }
