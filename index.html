@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<script>document.documentElement.classList.add("js");</script>
+<script>
+document.documentElement.classList.add('js', 'intro-loading');
+window.wizIntroStarted = performance.now();
+window.wizIntroSafety = setTimeout(() => {
+  document.documentElement.classList.remove('intro-loading');
+  document.documentElement.classList.add('intro-ready');
+  const page = document.querySelector('.wrap');
+  const loader = document.getElementById('intro-loader');
+  if (page) page.inert = false;
+  if (loader) loader.hidden = true;
+}, 4500);
+</script>
 <title>WIZ株式会社 | アプリ・Web・映像制作</title><meta name="description" content="大阪府箕面市のWIZ株式会社。モーターサイクルカルチャーを軸に、アプリ開発、Webサイト制作、映像制作、プロモーション・広告を手がけます。"><link rel="canonical" href="https://wiz-kk.jp/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +64,7 @@ body { overflow-x: clip; }
   .intro { padding: 0; }
   .intro h2 { font-size: clamp(1.5rem, 2.1vw, 2.35rem); line-height: 1.7; }
   .intro .wide { display: none; }
-  .heading span { font-size: clamp(3.4rem, 5.8vw, 6rem); }
+  .heading > span { font-size: clamp(3.4rem, 5.8vw, 6rem); }
 }
 
 .service-grid {
@@ -109,7 +120,7 @@ body { overflow-x: clip; }
 .hero { padding-bottom: clamp(46px, 7vw, 110px); }
 #services { display: block; padding-top: clamp(16px, 2.5vw, 36px); }
 #services .heading { text-align: center; font-weight: 400; margin-bottom: clamp(20px,2.5vw,36px); }
-#services .heading span { font-size: clamp(1.4rem,2.4vw,2rem); letter-spacing: .035em; }
+#services .heading > span { font-size: clamp(1.4rem,2.4vw,2rem); letter-spacing: .035em; }
 #services .heading small { display: block; margin: 6px 0 0; font-size: .8125rem; }
 .company-note { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; }
 .contact-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 1.4em; border: 1px solid #858585; text-decoration: none; font-size: .875rem; }
@@ -190,7 +201,7 @@ body { overflow-x: clip; }
 .service-story > div { max-width: 43rem; }
 .story-closing { padding: clamp(60px, 10vw, 150px) 0 clamp(120px, 17vw, 250px); text-align: center; }
 .story-closing p { font-size: clamp(1.7rem, 3.4vw, 3.2rem); line-height: 1.9; letter-spacing: .04em; }
-.story-closing span { display: block; margin-top: 30px; font-size: 1rem; }
+.story-closing > span { display: block; margin-top: 30px; font-size: 1rem; }
 @media(max-width:650px) {
   .story-prologue { padding: 20px 0 125px; }
   .story-prologue h2 { margin: 25px 0 36px; font-size: clamp(1.6rem, 6.5vw, 2.1rem); }
@@ -204,15 +215,17 @@ body { overflow-x: clip; }
 }
 </style>
 <link rel="stylesheet" href="navigation.css">
+<link rel="stylesheet" href="motion.css">
 <script src="navigation.js" defer></script>
-</head><body id="top"><a class="skip" href="#main">本文へ</a><div class="wrap">
+<script src="motion.js" defer></script>
+</head><body id="top"><div class="intro-loader" id="intro-loader" role="status" aria-label="サイトを表示しています"><span class="loading-ring" aria-hidden="true"></span><span class="sr-only">サイトを表示しています</span><button class="intro-skip" type="button">スキップ</button></div><a class="skip" href="#main">本文へ</a><div class="wrap">
 <header class="site-header"><a class="brand" href="#top"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="header-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#header-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg><span>WIZ k.K. ウィズ株式会社</span></a><button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="site-nav" id="site-menu" aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
 <main id="main"><section class="hero"><div class="hero-stage"><h1 aria-label="WIZ株式会社"><span class="hero-mark"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="hero-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#hero-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg></span></h1><div class="intro"><h2>人と人をつなぎ、<br class="mobile-break">カルチャーを、その先へ。</h2></div></div><p class="hero-description">WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></section>
 <section class="story-prologue" aria-labelledby="story-title">
 <p class="story-eyebrow" lang="en">Our story</p>
 <h2 id="story-title">バイクを入口に。<br>人を知り、世界を広げる。</h2>
 <div class="story-prologue-copy">
-<p>代表の伊藤晶は、約20年にわたり映像制作に携わり、現在はYouTube「エン人 — バイク乗りたちの人生交差点 —」で、バイク乗りやつくり手の人生を伝えています。カメラとバイクを積んで全国を旅し、その人のいる場所へ会いに行く。WIZの仕事には、その活動を通じて育んできたまなざしがあります。</p>
+<p>約20年にわたる映像制作と、バイク乗りやつくり手の人生を聞くドキュメンタリー。カメラとバイクを積んで全国を旅し、その人のいる場所へ会いに行く。WIZの仕事には、その活動を通じて育んできたまなざしがあります。</p>
 <p>何に惹かれ、何を選び、誰と出会って、今ここにいるのか。バイクをきっかけに交わす言葉の先には、いつも、その人だけの物語があります。</p>
 </div>
 </section>
@@ -220,23 +233,31 @@ body { overflow-x: clip; }
 <h2 class="heading" id="services-title"><span lang="en">Services</span><small>想いを、かたちに。</small></h2>
 <div class="story-chapters">
 <section class="story-chapter" aria-labelledby="motorcycle-title">
+<div class="chapter-scene"><div class="chapter-photo" aria-hidden="true" style="--photo-position:50% 55%"><div class="photo-motion"><img src="https://images.unsplash.com/photo-1763798816055-9a03df62bd65?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" srcset="https://images.unsplash.com/photo-1763798816055-9a03df62bd65?auto=format&amp;fit=crop&amp;q=75&amp;w=800 800w, https://images.unsplash.com/photo-1763798816055-9a03df62bd65?auto=format&amp;fit=crop&amp;q=80&amp;w=1600 1600w" sizes="100vw" alt="" loading="lazy" decoding="async"></div></div>
 <div class="chapter-heading"><p class="story-eyebrow">なぜ、バイクなのか。</p><h3 id="motorcycle-title">一台のバイクの向こうに、<br>ひとりの人生がある。</h3></div>
 <div class="chapter-copy"><p>同じ車種でも、同じ一台にはならない。選んだパーツ、走ってきた道、手入れを重ねた時間。その姿には、持ち主の好みだけでなく、出会いや生き方まで表れます。</p><p>だから、バイクの話を聞くことは、人の話を聞くこと。かっこよさの奥にある想いや、そこに至るまでの道のりを知りたい。その好奇心が、カメラを向ける理由です。</p></div>
-<article class="service-story"><h4>映像制作</h4><div><p>「エン人」で大切にしているのは、その人の言葉で、その人の人生を聞くこと。インタビューやドキュメンタリー、ブランドを伝える映像を通して、表情や声、その場に流れる空気まで丁寧にすくい取ります。</p><p>撮影から編集まで、伝えたいことに合う距離と時間を考える。見終えたあとに、その人に会ってみたくなる。そんな出会いの入口を、映像でつくります。</p></div></article>
+</div>
+<article class="service-story"><h4>映像制作</h4><div><p>大切にしているのは、その人の言葉で、その人の人生を聞くこと。インタビューやドキュメンタリー、ブランドを伝える映像を通して、表情や声、その場に流れる空気まで丁寧にすくい取ります。</p><p>撮影から編集まで、伝えたいことに合う距離と時間を考える。見終えたあとに、その人に会ってみたくなる。そんな出会いの入口を、映像でつくります。</p></div></article>
 </section>
 <section class="story-chapter" aria-labelledby="people-title">
+<div class="chapter-scene"><div class="chapter-photo" aria-hidden="true" style="--photo-position:50% 50%"><div class="photo-motion"><img src="https://images.unsplash.com/photo-1758272960272-8a1c05028c32?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" srcset="https://images.unsplash.com/photo-1758272960272-8a1c05028c32?auto=format&amp;fit=crop&amp;q=75&amp;w=800 800w, https://images.unsplash.com/photo-1758272960272-8a1c05028c32?auto=format&amp;fit=crop&amp;q=80&amp;w=1600 1600w" sizes="100vw" alt="" loading="lazy" decoding="async"></div></div>
 <div class="chapter-heading"><p class="story-eyebrow">なぜ、人なのか。</p><h3 id="people-title">「好き」で出会い、<br>その先も、つながっていく。</h3></div>
 <div class="chapter-copy"><p>一台のバイクが、知らなかった誰かと話すきっかけになる。走る場所が増え、訪ねたい店ができ、また会いたい人が増えていく。バイクのある暮らしの豊かさは、そんなつながりの中にもあります。</p><p>出会いを、その場限りで終わらせない。離れた場所にいても、互いの「好き」を知り、次に会う楽しみを育てられるように。人と人の距離を近づける仕組みを考えます。</p></div>
-<article class="service-story"><h4>アプリ開発</h4><div><p>ライダー同士の交流をテーマに、使う人の気持ちと行動からアプリを企画・開発します。開発中の「motomo」も、愛車をきっかけにした出会いや交流を、日常の中で育てていくための取り組みです。</p><p>アイデアの整理から画面設計、開発まで。現場にある楽しさを大切にしながら、自然に使えて、また誰かとつながりたくなる体験へと形にします。</p></div></article>
+</div>
+<article class="service-story"><h4>アプリ開発</h4><div><p>ライダー同士の交流をテーマに、使う人の気持ちと行動からアプリを企画・開発します。愛車をきっかけにした出会いや交流を、日常の中で育てていく。現実のつながりが続いていくための、小さなきっかけをつくります。</p><p>アイデアの整理から画面設計、開発まで。現場にある楽しさを大切にしながら、自然に使えて、また誰かとつながりたくなる体験へと形にします。</p></div></article>
 </section>
 <section class="story-chapter" aria-labelledby="culture-title">
+<div class="chapter-scene"><div class="chapter-photo" aria-hidden="true" style="--photo-position:50% 43%"><div class="photo-motion"><img src="https://images.unsplash.com/photo-1745448797901-2a4c9d9af1c1?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" srcset="https://images.unsplash.com/photo-1745448797901-2a4c9d9af1c1?auto=format&amp;fit=crop&amp;q=75&amp;w=800 800w, https://images.unsplash.com/photo-1745448797901-2a4c9d9af1c1?auto=format&amp;fit=crop&amp;q=80&amp;w=1600 1600w" sizes="100vw" alt="" loading="lazy" decoding="async"></div></div>
 <div class="chapter-heading"><p class="story-eyebrow">なぜ、この文化を大切にしたいのか。</p><h3 id="culture-title">受け取った熱を、<br>次の誰かへ。</h3></div>
 <div class="chapter-copy"><p>手を動かすつくり手がいて、集まる場所があって、楽しみ方を教えてくれる仲間がいる。モーターサイクルカルチャーは、バイクだけで成り立っているわけではありません。人から人へと手渡される知恵やこだわりが、その厚みをつくっています。</p><p>今ある姿だけでなく、その背景も伝えていきたい。まだこの世界を知らない誰かにも、好きになる入口を届けたい。記録すること、紹介すること、つながる場所をつくること。その積み重ねで、文化の続きを支えたいと考えています。</p></div>
+</div>
 <article class="service-story"><h4>Webサイト制作</h4><div><p>お店やブランド、つくり手が大切にしてきたことを、訪れた人がゆっくり知ることのできる場所に。対話を通して魅力を整理し、言葉とビジュアル、情報の流れを丁寧に組み立てます。</p><p>スマートフォンでもPCでも心地よく読めて、知りたいことに自然にたどり着けるように。その人らしさが伝わり、実際に会う、訪ねる、相談するという次の行動につながるWebサイトを制作します。</p></div></article>
 </section>
 <section class="story-chapter" aria-labelledby="reach-title">
+<div class="chapter-scene"><div class="chapter-photo" aria-hidden="true" style="--photo-position:50% 42%"><div class="photo-motion"><img src="https://images.unsplash.com/photo-1758390851031-bcf34075ca61?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" srcset="https://images.unsplash.com/photo-1758390851031-bcf34075ca61?auto=format&amp;fit=crop&amp;q=75&amp;w=800 800w, https://images.unsplash.com/photo-1758390851031-bcf34075ca61?auto=format&amp;fit=crop&amp;q=80&amp;w=1600 1600w" sizes="100vw" alt="" loading="lazy" decoding="async"></div></div>
 <div class="chapter-heading"><p class="story-eyebrow">そして、まだ出会っていない人へ。</p><h3 id="reach-title">伝わることから、<br>新しい関係が始まる。</h3></div>
 <div class="chapter-copy"><p>いいものがある。面白い人がいる。心を動かす場所がある。その魅力を知る人が増えれば、新しい会話や出会いが生まれます。内側にある熱を、そのまま外へ届けるために、誰に、何を、どう伝えるかを考えます。</p></div>
+</div>
 <article class="service-story"><h4>プロモーション・広告</h4><div><p>商品やサービス、イベントの背景にある想いを理解し、映像とWebを組み合わせた企画・制作を行います。モーターサイクルカルチャーに関わってきた視点から、届けたい相手の気持ちに届く言葉や見せ方を探ります。</p><p>一度きりの話題で終わらず、興味が出会いへ、出会いが関係へと続いていくように。つくる人と受け取る人、その両方の顔を思い浮かべながら、コミュニケーションを形にします。</p></div></article>
 </section>
 </div>
@@ -247,28 +268,5 @@ body { overflow-x: clip; }
 <div><h2 id="company-title">会社概要</h2>
 <dl class="company-row"><div><dt>会社名</dt><dd>WIZ株式会社</dd></div><div><dt>代表取締役</dt><dd>伊藤　晶</dd></div><div><dt>創業</dt><dd>2018年11月1日</dd></div></dl>
 <dl class="company-row"><div><dt>資本金</dt><dd>1,000,000円</dd></div><div><dt>所在地</dt><dd>〒562-0024 大阪府箕面市粟生新家2-5-9</dd></div></dl></div><a class="contact-button" id="contact" href="contact.html">お問い合わせ</a></section></main><footer><span>© WIZ株式会社</span><a href="#top">ページの先頭へ</a></footer></div>
-<script>
-(() => {
-  if (!('IntersectionObserver' in window) ||
-      !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
 
-  const items = document.querySelectorAll(
-    '.hero h1, .intro h2, .hero-description, .story-prologue > .story-eyebrow, .story-prologue > h2, .story-prologue-copy p, .heading, .chapter-heading > *, .chapter-copy p, .service-story h4, .service-story p, .story-closing > *, main img'
-  );
-  const observer = new IntersectionObserver(entries => {
-    const visible = entries.filter(entry => entry.isIntersecting)
-      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-    visible.forEach(({target}, index) => {
-      target.style.setProperty('--reveal-delay', Math.min(index * 65, 195) + 'ms');
-      target.classList.remove('reveal-pending');
-      observer.unobserve(target);
-    });
-  }, {threshold: 0});
-  items.forEach(item => {
-    if (item.tagName === 'IMG' && item.parentElement.closest('article, .intro p, dl > div')) return;
-    item.classList.add('reveal-item', 'reveal-pending');
-    observer.observe(item);
-  });
-})();
-</script>
 </body></html>
