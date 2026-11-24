@@ -20,7 +20,13 @@
   prev.onclick = () => step(-1);
   next.onclick = () => step(1);
   track.addEventListener('scroll', sync, {passive:true});
-  const sizeFrame = () => frame.style.setProperty('--news-half-viewport', document.documentElement.clientWidth / 2 + 'px');
+  const intro = document.querySelector('.hero-description');
+  const section = frame.parentElement;
+  const sizeFrame = () => {
+    frame.style.setProperty('--news-viewport', document.documentElement.clientWidth + 'px');
+    frame.style.setProperty('--news-offset', -section.getBoundingClientRect().left + 'px');
+    frame.style.setProperty('--news-intro-inset', intro.getBoundingClientRect().left + parseFloat(getComputedStyle(intro).paddingLeft) + 'px');
+  };
   sizeFrame();
   new ResizeObserver(sizeFrame).observe(document.documentElement);
   new ResizeObserver(sync).observe(track);
@@ -32,7 +38,9 @@
   let paths;
   try { paths = await json('/news-feed.json'); }
   catch { paths = ['/wiz-post-20261125-3.json','/wiz-post-20261124-2.json','/wiz-post-20261124-1.json']; }
+  const maxVisiblePosts = 10;
   for (const path of paths) {
+    if (track.childElementCount >= maxVisiblePosts) break;
     try {
       const item = await json(path);
       const article = document.createElement('article');
