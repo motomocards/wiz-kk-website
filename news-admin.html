@@ -34,7 +34,7 @@ form.onsubmit = event => {
   event.preventDefault();
   const title = field('headline').value.trim(), url = field('target').value.trim();
   if (!title || !encoded || (url && !/^https?:\/\//i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先には https:// または http:// から始まるURLを指定できます。'; return;}
-  filename ||= 'wiz-post-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
+  filename ||= 'wiz-post-entry-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
   const data = new Blob([JSON.stringify({title,image:encoded,url})],{type:'application/json'});
   const link = document.createElement('a'); link.href = URL.createObjectURL(data); link.download = filename; link.click();
   setTimeout(()=>URL.revokeObjectURL(link.href),60000);
