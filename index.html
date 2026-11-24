@@ -73,6 +73,7 @@ body { isolation: isolate; }
 .company-row dt { flex: none; font-weight: 500; }
 
 @media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
   .reveal-item {
     transition: opacity .65s ease-out, transform .65s cubic-bezier(.2,.7,.25,1), filter .65s ease-out;
     transition-delay: var(--reveal-delay, 0ms);
