@@ -59,6 +59,19 @@ body { isolation: isolate; }
   .service-grid article { min-height: 170px; padding: 24px; }
 }
 
+
+.company-note {
+  padding: 26px 0 24px;
+  border-bottom: 1px solid #bcbcbc;
+  font-size: .8125rem;
+  line-height: 1.8;
+  color: #515151;
+}
+.company-note h2 { margin: 0 0 6px; font-size: .875rem; font-weight: 600; letter-spacing: .08em; }
+.company-row { display: flex; flex-wrap: wrap; gap: 1px 1.8em; }
+.company-row > div { display: flex; align-items: baseline; gap: .65em; padding: 0; border: 0; }
+.company-row dt { flex: none; font-weight: 500; }
+
 @media (prefers-reduced-motion: no-preference) {
   .reveal-item {
     transition: opacity .65s ease-out, transform .65s cubic-bezier(.2,.7,.25,1), filter .65s ease-out;
@@ -88,15 +101,18 @@ body { isolation: isolate; }
 <article><h3>Webサイト制作</h3><p>ショップやブランドが大切にする言葉とビジュアルを整理し、事業や作品を紹介するWebサイトを制作します。</p></article>
 <article><h3>映像制作</h3><p>ライダーやつくり手を訪ね、愛車との出会いやものづくりの背景を、インタビューと映像で記録します。</p></article>
 <article><h3>プロモーション・広告</h3><p>商品やイベントの魅力を誰に、どう届けるか。企画から映像・Web向けの広告制作まで手がけます。</p></article></div></section>
-<section class="group" id="company"><h2 class="heading"><span lang="en">Company</span><small>会社概要</small></h2><dl><div><dt>会社名</dt><dd>WIZ株式会社</dd></div><div><dt>代表取締役</dt><dd>伊藤　晶</dd></div><div><dt>創業</dt><dd>2018年11月1日</dd></div><div><dt>資本金</dt><dd>1,000,000円</dd></div><div><dt>所在地</dt><dd>〒562-0024<br>大阪府箕面市粟生新家2-5-9</dd></div></dl></section>
-<section class="group" id="contact"><h2 class="heading"><span lang="en">Contact</span><small>お問い合わせ</small></h2><div><p>開発・制作のご相談、取材や広告に関するお問い合わせは、専用フォームからお寄せください。</p><iframe class="contact-form" title="WIZ株式会社 お問い合わせフォーム" src="https://docs.google.com/forms/d/e/1FAIpQLSfKm-NGetJN3g-ShNrI5ClbSM_DBE5aEQ7GnPtSgEHNpvAmwQ/viewform?embedded=true" loading="lazy"></iframe></div></section></main><footer><span>© WIZ株式会社</span><a href="#top">ページの先頭へ</a></footer></div>
+
+<section class="group" id="contact"><h2 class="heading"><span lang="en">Contact</span><small>お問い合わせ</small></h2><div><p>開発・制作のご相談、取材や広告に関するお問い合わせは、専用フォームからお寄せください。</p><iframe class="contact-form" title="WIZ株式会社 お問い合わせフォーム" src="https://docs.google.com/forms/d/e/1FAIpQLSfKm-NGetJN3g-ShNrI5ClbSM_DBE5aEQ7GnPtSgEHNpvAmwQ/viewform?embedded=true" loading="lazy"></iframe></div></section><section class="company-note" id="company" aria-labelledby="company-title">
+<h2 id="company-title">会社概要</h2>
+<dl class="company-row"><div><dt>会社名</dt><dd>WIZ株式会社</dd></div><div><dt>代表取締役</dt><dd>伊藤　晶</dd></div><div><dt>創業</dt><dd>2018年11月1日</dd></div></dl>
+<dl class="company-row"><div><dt>資本金</dt><dd>1,000,000円</dd></div><div><dt>所在地</dt><dd>〒562-0024 大阪府箕面市粟生新家2-5-9</dd></div></dl></section></main><footer><span>© WIZ株式会社</span><a href="#top">ページの先頭へ</a></footer></div>
 <script>
 (() => {
   if (!('IntersectionObserver' in window) ||
       !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
 
   const items = document.querySelectorAll(
-    '.hero h1, .intro h2, .intro p, .heading, article, dl > div, #contact p, main img'
+    '.hero h1, .intro h2, .intro p, .heading, article, #contact p, main img'
   );
   const observer = new IntersectionObserver(entries => {
     const visible = entries.filter(entry => entry.isIntersecting)
