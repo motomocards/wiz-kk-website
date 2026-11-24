@@ -85,8 +85,21 @@ body { isolation: isolate; }
 @media print {
   .reveal-item { opacity: 1; filter: none; transform: none; transition: none; }
 }
+
+#services { display: block; }
+#services .heading { text-align: center; font-weight: 400; margin-bottom: clamp(24px,4vw,48px); }
+#services .heading span { font-size: clamp(1.4rem,2.4vw,2rem); letter-spacing: .035em; }
+#services .heading small { display: block; margin: 6px 0 0; font-size: .8125rem; }
+.company-note { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; }
+.contact-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 1.4em; border: 1px solid #858585; text-decoration: none; font-size: .875rem; }
+.contact-button:hover { background: #484848; color: white; }
+@media(max-width:650px) {
+  .company-note { grid-template-columns: 1fr auto; gap: 10px; }
+  .contact-button { padding: 0 .65em; }
+  .company-row > div { min-width: 0; }
+}
 </style></head><body id="top"><a class="skip" href="#main">本文へ</a><div class="wrap">
-<header><a class="brand" href="#top"><b>WIZ</b><span>株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="#contact">お問い合わせ</a></nav></header>
+<header><a class="brand" href="#top"><b>WIZ</b><span>株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
 <main id="main"><section class="hero"><h1 aria-label="WIZ株式会社">WIZ</h1><div class="intro"><h2>走る人、つくる人、その文化を伝える。</h2><p>WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></div></section>
 <section class="group" id="services"><h2 class="heading"><span lang="en">Services</span><small>事業内容</small></h2><div class="service-grid">
 <article><h3>アプリ開発</h3><p>ライダー同士の交流や情報交換をテーマに、スマートフォンアプリを企画・開発します。</p></article>
@@ -94,17 +107,17 @@ body { isolation: isolate; }
 <article><h3>映像制作</h3><p>ライダーやつくり手を訪ね、愛車との出会いやものづくりの背景を、インタビューと映像で記録します。</p></article>
 <article><h3>プロモーション・広告</h3><p>商品やイベントの魅力を誰に、どう届けるか。企画から映像・Web向けの広告制作まで手がけます。</p></article></div></section>
 
-<section class="group" id="contact"><h2 class="heading"><span lang="en">Contact</span><small>お問い合わせ</small></h2><div><p>開発・制作のご相談、取材や広告に関するお問い合わせは、専用フォームからお寄せください。</p><iframe class="contact-form" title="WIZ株式会社 お問い合わせフォーム" src="https://docs.google.com/forms/d/e/1FAIpQLSfKm-NGetJN3g-ShNrI5ClbSM_DBE5aEQ7GnPtSgEHNpvAmwQ/viewform?embedded=true" loading="lazy"></iframe></div></section><section class="company-note" id="company" aria-labelledby="company-title">
-<h2 id="company-title">会社概要</h2>
+<section class="company-note" id="company" aria-labelledby="company-title">
+<div><h2 id="company-title">会社概要</h2>
 <dl class="company-row"><div><dt>会社名</dt><dd>WIZ株式会社</dd></div><div><dt>代表取締役</dt><dd>伊藤　晶</dd></div><div><dt>創業</dt><dd>2018年11月1日</dd></div></dl>
-<dl class="company-row"><div><dt>資本金</dt><dd>1,000,000円</dd></div><div><dt>所在地</dt><dd>〒562-0024 大阪府箕面市粟生新家2-5-9</dd></div></dl></section></main><footer><span>© WIZ株式会社</span><a href="#top">ページの先頭へ</a></footer></div>
+<dl class="company-row"><div><dt>資本金</dt><dd>1,000,000円</dd></div><div><dt>所在地</dt><dd>〒562-0024 大阪府箕面市粟生新家2-5-9</dd></div></dl></div><a class="contact-button" id="contact" href="contact.html">お問い合わせ</a></section></main><footer><span>© WIZ株式会社</span><a href="#top">ページの先頭へ</a></footer></div>
 <script>
 (() => {
   if (!('IntersectionObserver' in window) ||
       !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
 
   const items = document.querySelectorAll(
-    '.hero h1, .intro h2, .intro p, .heading, article, #contact p, main img'
+    '.hero h1, .intro h2, .intro p, .heading, article, main img'
   );
   const observer = new IntersectionObserver(entries => {
     const visible = entries.filter(entry => entry.isIntersecting)
