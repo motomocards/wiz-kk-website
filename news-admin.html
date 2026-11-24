@@ -1,23 +1,65 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>お知らせ管理 | WIZ株式会社</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}input{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
+*{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}input,select{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
 </style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
+<label for="posts">編集するお知らせ</label><select id="posts"><option value="">新規投稿</option></select><p id="list-status" role="status"></p>
 <form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
 <label for="photo">画像 <small>（任意）</small></label><input id="photo" type="file" accept="image/*">
-<label for="target">リンク先 <small>（任意）</small></label><input id="target" type="url" placeholder="https://">
+<button type="button" id="reset-image">標準画像に戻す</button><label for="target">リンク先 <small>（任意）</small></label><input id="target" type="text" inputmode="url" placeholder="https://">
 <h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output>
-<p>投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
-<button>投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form></main>
+<p id="instructions">投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
+<button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form></main>
 <script>
 const field = id => document.getElementById(id);
 const form = field('editor'), photo = field('photo'), preview = field('preview');
 const defaultImage = preview.getAttribute('src');
-let revision = 0, encoded = '', filename = '';
+const picker = field('posts'), upload = field('upload');
+const newInstructions = field('instructions').textContent, newUpload = upload.href;
+const entries = new Map();
+let revision = 0, encoded = '', filename = '', originalImage = defaultImage;
+async function readJSON(path) {
+  const response = await fetch(path, {cache:'no-store'});
+  if (!response.ok) throw new Error();
+  return response.json();
+}
+async function loadPosts() {
+  try {
+    const paths = await readJSON('/news-feed.json');
+    const results = await Promise.allSettled(paths.map(async path => {
+      if (!/^\/wiz-post-[a-zA-Z0-9-]+\.json$/.test(path)) throw new Error();
+      return [path, await readJSON(path)];
+    }));
+    for (const result of results) {
+      if (result.status !== 'fulfilled') continue;
+      const [path, item] = result.value;
+      entries.set(path,item);
+      picker.add(new Option(item.title,path));
+    }
+    if (entries.size !== paths.length) throw new Error();
+  } catch {field('list-status').textContent = '一覧をすべて読み込めませんでした。ページを再読み込みしてください。';}
+}
+loadPosts();
+picker.onchange = () => {
+  revision++; form.reset(); encoded = ''; filename = '';
+  const item = entries.get(picker.value);
+  originalImage = item?.image || defaultImage; preview.src = originalImage;
+  field('headline').value = item?.title || ''; field('target').value = item?.url || '';
+  field('caption').textContent = field('headline').value;
+  field('status').textContent = ''; upload.hidden = true;
+  field('save').textContent = item ? '更新内容をコピー' : '投稿ファイルを保存';
+  field('instructions').textContent = item ? '更新内容をコピーし、GitHubの編集画面でこの投稿の本文全体に貼り替えて「Commit changes」を押してください。' : newInstructions;
+  upload.href = item ? 'https://github.com/motomocards/wiz-kk-website/edit/main'+picker.value : newUpload;
+  upload.textContent = item ? 'この投稿をGitHubで更新 ↗' : 'GitHubの公開画面を開く ↗';
+};
+field('reset-image').onclick = () => {
+  revision++; photo.value = ''; encoded = ''; originalImage = defaultImage; preview.src = defaultImage;
+  form.oninput();
+};
 form.oninput = () => { filename = ''; field('upload').hidden = true; field('status').textContent = ''; field('caption').textContent = field('headline').value; };
 photo.onchange = async () => {
   const n = ++revision;
-  encoded = ''; preview.src = defaultImage;
+  encoded = ''; preview.src = originalImage;
   if (!photo.files.length) return;
   const address = URL.createObjectURL(photo.files[0]);
   try {
@@ -31,12 +73,22 @@ photo.onchange = async () => {
   } catch { if (n === revision) field('status').textContent = '画像を読み込めません。JPEGまたはPNGでお試しください。'; }
   finally { URL.revokeObjectURL(address); }
 };
-form.onsubmit = event => {
+form.onsubmit = async event => {
   event.preventDefault();
   const title = field('headline').value.trim(), url = field('target').value.trim();
-  if (!title || (photo.files.length && !encoded) || (url && !/^https?:\/\//i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先には https:// または http:// から始まるURLを指定できます。'; return;}
+  if (!title || (photo.files.length && !encoded) || (url && !/^(https?:\/\/|\/(?!\/)|#)/i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先にはサイト内のパス、ページ内リンク、またはWebサイトのURLを指定してください。'; return;}
+  const path = picker.value;
+  const payload = JSON.stringify({...entries.get(path), title,image:encoded || originalImage,url});
+  if (path) {
+    try {
+      await navigator.clipboard.writeText(payload);
+      field('status').textContent = '更新内容をコピーしました。GitHubで貼り替えて更新してください。';
+      upload.hidden = false;
+    } catch {field('status').textContent = 'コピーを許可してから、もう一度更新内容をコピーしてください。';}
+    return;
+  }
   filename ||= 'wiz-post-entry-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
-  const data = new Blob([JSON.stringify({title,image:encoded || defaultImage,url})],{type:'application/json'});
+  const data = new Blob([payload],{type:'application/json'});
   const link = document.createElement('a'); link.href = URL.createObjectURL(data); link.download = filename; link.click();
   setTimeout(()=>URL.revokeObjectURL(link.href),60000);
   field('status').textContent = '保存したファイル名：'+filename;
