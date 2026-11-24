@@ -1,15 +1,17 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>お知らせ管理 | WIZ株式会社</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}input,select{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
-</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
+*{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}textarea,input,select{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
+textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhere}</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
 <label for="posts">編集するお知らせ</label><select id="posts"><option value="">新規投稿</option></select><p id="list-status" role="status"></p>
 <form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
-<label for="photo">画像 <small>（任意）</small></label><input id="photo" type="file" accept="image/*">
+<label for="body-text">本文</label><textarea id="body-text" rows="7" placeholder="本文にURLを書くとリンクになります"></textarea>
+<label for="photo">サムネイル画像1枚 <small>（任意）</small></label><input id="photo" type="file" accept="image/*">
 <button type="button" id="reset-image">標準画像に戻す</button><label for="target">リンク先 <small>（任意）</small></label><input id="target" type="text" inputmode="url" placeholder="https://">
-<h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output>
+<h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output><div id="body-preview"></div>
 <p id="instructions">投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
 <button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form></main>
+<script src="/news-text.js"></script>
 <script>
 const field = id => document.getElementById(id);
 const form = field('editor'), photo = field('photo'), preview = field('preview');
@@ -45,6 +47,8 @@ picker.onchange = () => {
   const item = entries.get(picker.value);
   originalImage = item?.image || defaultImage; preview.src = originalImage;
   field('headline').value = item?.title || ''; field('target').value = item?.url || '';
+  field('body-text').value = item?.body || '';
+  renderNewsBody(field('body-preview'),field('body-text').value);
   field('caption').textContent = field('headline').value;
   field('status').textContent = ''; upload.hidden = true;
   field('save').textContent = item ? '更新内容をコピー' : '投稿ファイルを保存';
@@ -56,7 +60,7 @@ field('reset-image').onclick = () => {
   revision++; photo.value = ''; encoded = ''; originalImage = defaultImage; preview.src = defaultImage;
   form.oninput();
 };
-form.oninput = () => { filename = ''; field('upload').hidden = true; field('status').textContent = ''; field('caption').textContent = field('headline').value; };
+form.oninput = () => { renderNewsBody(field('body-preview'),field('body-text').value); filename = ''; field('upload').hidden = true; field('status').textContent = ''; field('caption').textContent = field('headline').value; };
 photo.onchange = async () => {
   const n = ++revision;
   encoded = ''; preview.src = originalImage;
@@ -78,7 +82,7 @@ form.onsubmit = async event => {
   const title = field('headline').value.trim(), url = field('target').value.trim();
   if (!title || (photo.files.length && !encoded) || (url && !/^(https?:\/\/|\/(?!\/)|#)/i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先にはサイト内のパス、ページ内リンク、またはWebサイトのURLを指定してください。'; return;}
   const path = picker.value;
-  const payload = JSON.stringify({...entries.get(path), title,image:encoded || originalImage,url});
+  const payload = JSON.stringify({...entries.get(path), title,body:field('body-text').value,image:encoded || originalImage,url});
   if (path) {
     try {
       await navigator.clipboard.writeText(payload);

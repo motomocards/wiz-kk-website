@@ -44,9 +44,8 @@
     try {
       const item = await json(path);
       const article = document.createElement('article');
-      const url = item.url && new URL(item.url, location.href);
-      const box = document.createElement(url && /^https?:$/.test(url.protocol) ? 'a' : 'div');
-      if (box.tagName === 'A') box.href = url.href;
+      const box = document.createElement('a');
+      box.href = '/news.html?post='+encodeURIComponent(path.slice(1,-5));
       const image = new Image();
       image.alt = '';
       image.src = item.image || '/news-default.svg';
