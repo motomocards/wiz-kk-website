@@ -21,7 +21,7 @@ body { isolation: isolate; }
 .hero h1 { width: min(62%, 580px); margin: 0 0 clamp(32px, 5vw, 72px); color: #535353; }
 .hero h1 { font: italic 900 clamp(5rem, 15vw, 14rem)/.82 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.095em; color: #141618; white-space: nowrap; }
 body { overflow-x: clip; }
-.hero-mark { position: relative; display: inline-block; vertical-align: middle; line-height: 0; }
+.hero-mark { --line-width: .152em; position: relative; display: inline-block; vertical-align: middle; line-height: 0; }
 .hero-mark svg { display: block; }
 .hero-mark::after {
   content: "";
@@ -29,10 +29,10 @@ body { overflow-x: clip; }
   position: absolute;
   left: 83.5%;
   bottom: 0;
-  width: calc(100vw - var(--header-side) - 83.5% - var(--page-gutter));
+  width: calc(100vw - var(--header-side) - 83.5% - var(--line-width) - var(--line-width));
   height: 100vh;
-  border-right: .152em solid #46b8f4;
-  border-bottom: .152em solid #46b8f4;
+  border-right: var(--line-width) solid #46b8f4;
+  border-bottom: var(--line-width) solid #46b8f4;
   border-bottom-right-radius: clamp(40px, 8vw, 120px);
   pointer-events: none;
 }
