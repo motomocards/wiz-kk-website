@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>document.documentElement.classList.add("js");</script>
 <title>WIZ株式会社 | アプリ・Web・映像制作</title><meta name="description" content="大阪府箕面市のWIZ株式会社。モーターサイクルカルチャーを軸に、アプリ開発、Webサイト制作、映像制作、プロモーション・広告を手がけます。"><link rel="canonical" href="https://wiz-kk.jp/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,14 +110,126 @@ body { overflow-x: clip; }
 .wiz-mark { display:inline-block; width:auto; height:.76em; overflow:visible; }
 .brand .wiz-mark { height:1.2rem; }
 @media(forced-colors:active) { .wiz-mark path { fill:CanvasText; } }
-</style></head><body id="top"><a class="skip" href="#main">本文へ</a><div class="wrap">
-<header><a class="brand" href="#top"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="header-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#header-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg><span>WIZ k.K. ウィズ株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
-<main id="main"><section class="hero"><h1 aria-label="WIZ株式会社"><span class="hero-mark"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="hero-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#hero-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg></span></h1><div class="intro"><h2>走る人、つくる人、その文化を伝える。</h2><p>WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></div></section>
-<section class="group" id="services"><h2 class="heading"><span lang="en">Services</span><small>事業内容</small></h2><div class="service-grid">
-<article><h3>アプリ開発</h3><p>ライダー同士の交流や情報交換をテーマに、スマートフォンアプリを企画・開発します。</p></article>
-<article><h3>Webサイト制作</h3><p>ショップやブランドが大切にする言葉とビジュアルを整理し、事業や作品を紹介するWebサイトを制作します。</p></article>
-<article><h3>映像制作</h3><p>ライダーやつくり手を訪ね、愛車との出会いやものづくりの背景を、インタビューと映像で記録します。</p></article>
-<article><h3>プロモーション・広告</h3><p>商品やイベントの魅力を誰に、どう届けるか。企画から映像・Web向けの広告制作まで手がけます。</p></article></div></section>
+
+/* Open, spacious service stories and a focused mobile first screen. */
+.mobile-break { display: none; }
+.hero-description { max-width: 54rem; margin-top: 22px; }
+.hero .intro { padding: 0; }
+.hero .intro h2 { margin-bottom: 0; }
+#services { border: 0; padding-bottom: clamp(70px, 10vw, 150px); }
+#services .heading { margin-bottom: clamp(30px, 6vw, 90px); }
+.service-grid { display: block; max-width: 1120px; margin-inline: auto; }
+.service-grid article {
+  display: grid;
+  grid-template-columns: minmax(200px, .8fr) minmax(0, 1.4fr);
+  align-items: start;
+  gap: clamp(35px, 7vw, 100px);
+  min-height: 0;
+  padding: clamp(50px, 7vw, 105px) 0;
+  border: 0;
+  background: none;
+}
+.service-grid article:nth-child(2), .service-grid article:nth-child(3) { background: none; }
+.service-grid h3 { margin: 0; font-size: clamp(1.4rem, 2.3vw, 2rem); line-height: 1.7; }
+.service-copy { max-width: 42rem; }
+.service-copy p { font-size: 1rem; line-height: 2.2; letter-spacing: .025em; }
+.service-copy p + p { margin-top: 1.4em; }
+@media(max-width:650px) {
+  .hero { padding: 0; }
+  .hero-stage {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(58px, 9svh, 90px);
+    padding: 90px 0;
+  }
+  .hero h1 { margin: 0; font-size: clamp(6rem, 29vw, 11rem); }
+  .hero .intro h2 { font-size: clamp(1.35rem, 5.8vw, 1.8rem); line-height: 1.95; letter-spacing: .035em; font-weight: 500; }
+  .mobile-break { display: block; }
+  .hero-description { margin: 0; padding: 62px 0 110px; font-size: 1rem; line-height: 2.2; }
+  #services { padding-top: 0; padding-bottom: 85px; }
+  #services .heading { margin-bottom: 32px; }
+  .service-grid article { grid-template-columns: 1fr; gap: 24px; padding: 55px 0; }
+  .service-grid h3 { font-size: 1.55rem; }
+  .service-copy p { line-height: 2.15; }
+}
+
+.story-prologue { max-width: 1120px; margin-inline: auto; padding: clamp(60px, 9vw, 135px) 0 clamp(100px, 15vw, 220px); }
+.story-eyebrow { font-size: .875rem; font-weight: 500; letter-spacing: .1em; line-height: 1.8; }
+.story-prologue h2 { margin: 28px 0 46px; font-size: clamp(1.9rem, 3.8vw, 3.8rem); font-weight: 500; line-height: 1.7; letter-spacing: .025em; }
+.story-prologue-copy { max-width: 43rem; margin-left: auto; }
+.story-prologue-copy p, .chapter-copy p, .service-story p { font-size: 1rem; line-height: 2.2; letter-spacing: .025em; }
+.story-prologue-copy p + p, .chapter-copy p + p, .service-story p + p { margin-top: 1.5em; }
+.story-chapters { max-width: 1120px; margin-inline: auto; }
+.story-chapter { padding: clamp(65px, 9vw, 140px) 0; }
+.chapter-heading h3 { margin: 24px 0 40px; font-size: clamp(1.8rem, 3.7vw, 3.5rem); font-weight: 500; line-height: 1.75; letter-spacing: .02em; }
+.chapter-copy { max-width: 43rem; margin-left: auto; }
+.service-story {
+  display: grid;
+  grid-template-columns: minmax(200px, .8fr) minmax(0, 1.4fr);
+  gap: clamp(35px, 7vw, 100px);
+  padding: 72px 0 0;
+  border: 0;
+  background: none;
+}
+.service-story h4 { margin: 0; font-size: clamp(1.25rem, 2vw, 1.7rem); font-weight: 500; line-height: 1.8; }
+.service-story > div { max-width: 43rem; }
+.story-closing { padding: clamp(60px, 10vw, 150px) 0 clamp(120px, 17vw, 250px); text-align: center; }
+.story-closing p { font-size: clamp(1.7rem, 3.4vw, 3.2rem); line-height: 1.9; letter-spacing: .04em; }
+.story-closing span { display: block; margin-top: 30px; font-size: 1rem; }
+@media(max-width:650px) {
+  .story-prologue { padding: 20px 0 125px; }
+  .story-prologue h2 { margin: 25px 0 36px; font-size: clamp(1.6rem, 6.5vw, 2.1rem); }
+  .story-eyebrow { font-size: .8125rem; letter-spacing: .05em; }
+  .story-chapter { padding: 65px 0; }
+  .chapter-heading h3 { margin: 24px 0 34px; font-size: clamp(1.45rem, 6.2vw, 2rem); }
+  .service-story { grid-template-columns: 1fr; gap: 22px; padding-top: 50px; }
+  .service-story h4 { font-size: 1.35rem; }
+  .story-closing { padding: 25px 0 135px; }
+  .story-closing p { font-size: clamp(1.5rem, 6.2vw, 2rem); }
+}
+</style>
+<link rel="stylesheet" href="navigation.css">
+<script src="navigation.js" defer></script>
+</head><body id="top"><a class="skip" href="#main">本文へ</a><div class="wrap">
+<header class="site-header"><a class="brand" href="#top"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="header-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#header-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg><span>WIZ k.K. ウィズ株式会社</span></a><button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="site-nav" id="site-menu" aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
+<main id="main"><section class="hero"><div class="hero-stage"><h1 aria-label="WIZ株式会社"><span class="hero-mark"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="hero-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#hero-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg></span></h1><div class="intro"><h2>人と人をつなぎ、<br class="mobile-break">カルチャーを、その先へ。</h2></div></div><p class="hero-description">WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></section>
+<section class="story-prologue" aria-labelledby="story-title">
+<p class="story-eyebrow" lang="en">Our story</p>
+<h2 id="story-title">バイクを入口に。<br>人を知り、世界を広げる。</h2>
+<div class="story-prologue-copy">
+<p>代表の伊藤晶は、約20年にわたり映像制作に携わり、現在はYouTube「エン人 — バイク乗りたちの人生交差点 —」で、バイク乗りやつくり手の人生を伝えています。カメラとバイクを積んで全国を旅し、その人のいる場所へ会いに行く。WIZの仕事には、その活動を通じて育んできたまなざしがあります。</p>
+<p>何に惹かれ、何を選び、誰と出会って、今ここにいるのか。バイクをきっかけに交わす言葉の先には、いつも、その人だけの物語があります。</p>
+</div>
+</section>
+<section class="group story-services" id="services" aria-labelledby="services-title">
+<h2 class="heading" id="services-title"><span lang="en">Services</span><small>想いを、かたちに。</small></h2>
+<div class="story-chapters">
+<section class="story-chapter" aria-labelledby="motorcycle-title">
+<div class="chapter-heading"><p class="story-eyebrow">なぜ、バイクなのか。</p><h3 id="motorcycle-title">一台のバイクの向こうに、<br>ひとりの人生がある。</h3></div>
+<div class="chapter-copy"><p>同じ車種でも、同じ一台にはならない。選んだパーツ、走ってきた道、手入れを重ねた時間。その姿には、持ち主の好みだけでなく、出会いや生き方まで表れます。</p><p>だから、バイクの話を聞くことは、人の話を聞くこと。かっこよさの奥にある想いや、そこに至るまでの道のりを知りたい。その好奇心が、カメラを向ける理由です。</p></div>
+<article class="service-story"><h4>映像制作</h4><div><p>「エン人」で大切にしているのは、その人の言葉で、その人の人生を聞くこと。インタビューやドキュメンタリー、ブランドを伝える映像を通して、表情や声、その場に流れる空気まで丁寧にすくい取ります。</p><p>撮影から編集まで、伝えたいことに合う距離と時間を考える。見終えたあとに、その人に会ってみたくなる。そんな出会いの入口を、映像でつくります。</p></div></article>
+</section>
+<section class="story-chapter" aria-labelledby="people-title">
+<div class="chapter-heading"><p class="story-eyebrow">なぜ、人なのか。</p><h3 id="people-title">「好き」で出会い、<br>その先も、つながっていく。</h3></div>
+<div class="chapter-copy"><p>一台のバイクが、知らなかった誰かと話すきっかけになる。走る場所が増え、訪ねたい店ができ、また会いたい人が増えていく。バイクのある暮らしの豊かさは、そんなつながりの中にもあります。</p><p>出会いを、その場限りで終わらせない。離れた場所にいても、互いの「好き」を知り、次に会う楽しみを育てられるように。人と人の距離を近づける仕組みを考えます。</p></div>
+<article class="service-story"><h4>アプリ開発</h4><div><p>ライダー同士の交流をテーマに、使う人の気持ちと行動からアプリを企画・開発します。開発中の「motomo」も、愛車をきっかけにした出会いや交流を、日常の中で育てていくための取り組みです。</p><p>アイデアの整理から画面設計、開発まで。現場にある楽しさを大切にしながら、自然に使えて、また誰かとつながりたくなる体験へと形にします。</p></div></article>
+</section>
+<section class="story-chapter" aria-labelledby="culture-title">
+<div class="chapter-heading"><p class="story-eyebrow">なぜ、この文化を大切にしたいのか。</p><h3 id="culture-title">受け取った熱を、<br>次の誰かへ。</h3></div>
+<div class="chapter-copy"><p>手を動かすつくり手がいて、集まる場所があって、楽しみ方を教えてくれる仲間がいる。モーターサイクルカルチャーは、バイクだけで成り立っているわけではありません。人から人へと手渡される知恵やこだわりが、その厚みをつくっています。</p><p>今ある姿だけでなく、その背景も伝えていきたい。まだこの世界を知らない誰かにも、好きになる入口を届けたい。記録すること、紹介すること、つながる場所をつくること。その積み重ねで、文化の続きを支えたいと考えています。</p></div>
+<article class="service-story"><h4>Webサイト制作</h4><div><p>お店やブランド、つくり手が大切にしてきたことを、訪れた人がゆっくり知ることのできる場所に。対話を通して魅力を整理し、言葉とビジュアル、情報の流れを丁寧に組み立てます。</p><p>スマートフォンでもPCでも心地よく読めて、知りたいことに自然にたどり着けるように。その人らしさが伝わり、実際に会う、訪ねる、相談するという次の行動につながるWebサイトを制作します。</p></div></article>
+</section>
+<section class="story-chapter" aria-labelledby="reach-title">
+<div class="chapter-heading"><p class="story-eyebrow">そして、まだ出会っていない人へ。</p><h3 id="reach-title">伝わることから、<br>新しい関係が始まる。</h3></div>
+<div class="chapter-copy"><p>いいものがある。面白い人がいる。心を動かす場所がある。その魅力を知る人が増えれば、新しい会話や出会いが生まれます。内側にある熱を、そのまま外へ届けるために、誰に、何を、どう伝えるかを考えます。</p></div>
+<article class="service-story"><h4>プロモーション・広告</h4><div><p>商品やサービス、イベントの背景にある想いを理解し、映像とWebを組み合わせた企画・制作を行います。モーターサイクルカルチャーに関わってきた視点から、届けたい相手の気持ちに届く言葉や見せ方を探ります。</p><p>一度きりの話題で終わらず、興味が出会いへ、出会いが関係へと続いていくように。つくる人と受け取る人、その両方の顔を思い浮かべながら、コミュニケーションを形にします。</p></div></article>
+</section>
+</div>
+</section>
+<section class="story-closing" aria-label="WIZの想い"><p>ひとつの「好き」が、<br>誰かの世界を広げていく。</p><span>そのきっかけを、WIZはつくります。</span></section>
 
 <section class="company-note" id="company" aria-labelledby="company-title">
 <div><h2 id="company-title">会社概要</h2>
@@ -128,7 +241,7 @@ body { overflow-x: clip; }
       !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
 
   const items = document.querySelectorAll(
-    '.hero h1, .intro h2, .intro p, .heading, article, main img'
+    '.hero h1, .intro h2, .hero-description, .story-prologue > .story-eyebrow, .story-prologue > h2, .story-prologue-copy p, .heading, .chapter-heading > *, .chapter-copy p, .service-story h4, .service-story p, .story-closing > *, main img'
   );
   const observer = new IntersectionObserver(entries => {
     const visible = entries.filter(entry => entry.isIntersecting)
