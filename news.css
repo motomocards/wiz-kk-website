@@ -1,5 +1,5 @@
 html, body { touch-action: auto; }
-.wiz-news { width: min(100%,1120px); margin: 0 auto clamp(76px,11vw,165px); scroll-margin-top: 95px; }
+.wiz-news { width: min(100%,1120px); margin: 0 auto clamp(140px,18vw,280px); scroll-margin-top: 95px; }
 .news-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
 .news-head h2 { margin:0; font:inherit; font-size:clamp(20px,2.2vw,30px); letter-spacing:.12em; }
 .news-controls { display:flex; gap:4px; }
