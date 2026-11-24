@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>お知らせ管理 | WIZ株式会社</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}textarea,input,select{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
-textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhere}#delete-post{display:inline-block;padding:8px 16px;border:1px solid #995858;border-radius:4px;color:#873f3f;text-decoration:none}#delete-row{margin-top:32px}</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
+textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhere}#delete-post{background:white;display:inline-block;padding:8px 16px;border:1px solid #995858;border-radius:4px;color:#873f3f;text-decoration:none}#delete-row{margin-top:32px}</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
 <label for="posts">編集するお知らせ</label><select id="posts"><option value="">新規投稿</option></select><p id="list-status" role="status"></p>
 <form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
 <label for="body-text">本文</label><textarea id="body-text" rows="7" placeholder="本文にURLを書くとリンクになります"></textarea>
@@ -10,7 +10,11 @@ textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhe
 <button type="button" id="reset-image">標準画像に戻す</button><label for="target">リンク先 <small>（任意）</small></label><input id="target" type="text" inputmode="url" placeholder="https://">
 <h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output><div id="body-preview"></div>
 <p id="instructions">投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
-<button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form><p id="delete-row" hidden><a id="delete-post" target="_blank" rel="noopener">投稿を削除</a><br><small>GitHubで削除対象を確認し、「Commit changes」で確定します。</small></p></main>
+<button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form><section id="delete-row" hidden>
+<details id="delete-auth"><summary>削除用の認証</summary>
+<label for="delete-token">GitHubの管理用トークン</label><input id="delete-token" type="password" autocomplete="off" spellcheck="false">
+<small>この画面を開いている間だけ使用します。初回は <a href="https://github.com/settings/personal-access-tokens/new?name=WIZ%20News&amp;target_name=motomocards&amp;contents=write" target="_blank" rel="noopener">GitHubでトークンを作成</a>し、対象を wiz-kk-website のみにして Contents を Read and write に設定してください。</small></details>
+<p><button type="button" id="delete-post">投稿を削除</button></p></section></main>
 <script src="/news-text.js"></script>
 <script>
 const field = id => document.getElementById(id);
@@ -46,8 +50,6 @@ picker.onchange = () => {
   revision++; form.reset(); encoded = ''; filename = '';
   const item = entries.get(picker.value);
   field('delete-row').hidden = !item;
-  if (item) field('delete-post').href = 'https://github.com/motomocards/wiz-kk-website/delete/main'+picker.value;
-  else field('delete-post').removeAttribute('href');
   originalImage = item?.image || defaultImage; preview.src = originalImage;
   field('headline').value = item?.title || ''; field('target').value = item?.url || '';
   field('body-text').value = item?.body || '';
@@ -58,6 +60,45 @@ picker.onchange = () => {
   field('instructions').textContent = item ? '更新内容をコピーし、GitHubの編集画面でこの投稿の本文全体に貼り替えて「Commit changes」を押してください。' : newInstructions;
   upload.href = item ? 'https://github.com/motomocards/wiz-kk-website/edit/main'+picker.value : newUpload;
   upload.textContent = item ? 'この投稿をGitHubで更新 ↗' : 'GitHubの公開画面を開く ↗';
+};
+field('delete-post').onclick = async () => {
+  const path = picker.value, item = entries.get(path);
+  const tokenField = field('delete-token'), token = tokenField.value.trim();
+  const button = field('delete-post'), status = field('list-status');
+  if (!item || button.disabled) return;
+  if (!token) {
+    field('delete-auth').open = true;
+    tokenField.focus();
+    status.textContent = '管理用トークンを入力し、「投稿を削除」を押してください。';
+    return;
+  }
+  button.disabled = picker.disabled = true;
+  const endpoint = 'https://api.github.com/repos/motomocards/wiz-kk-website/contents'+path;
+  const headers = {Authorization:'Bearer '+token, Accept:'application/vnd.github+json'};
+  status.textContent = '削除中…';
+  try {
+    const options = {headers, cache:'no-store', redirect:'error', credentials:'omit'};
+    const latest = await fetch(endpoint+'?ref=main',options);
+    if (!latest.ok) throw new Error(String(latest.status));
+    const file = await latest.json();
+    const result = await fetch(endpoint,{...options, method:'DELETE',
+      headers:{...headers,'Content-Type':'application/json'},
+      body:JSON.stringify({branch:'main',message:'Delete news: '+item.title,sha:file.sha})});
+    if (!result.ok) throw new Error(String(result.status));
+    entries.delete(path);
+    picker.selectedOptions[0].remove();
+    picker.value = ''; picker.onchange();
+    status.textContent = '「'+item.title+'」を削除しました。公開ページに順次反映されます。';
+    status.scrollIntoView({block:'center'});
+  } catch (error) {
+    if (['401','403'].includes(error.message)) {
+      field('delete-auth').open = true;
+      field('status').textContent = '認証できません。トークンの期限と書き込み権限を確認してください。';
+    } else {
+      field('status').textContent = '削除結果を確認できません。ページを再読み込みして投稿の状態を確認してください。';
+    }
+    status.textContent = field('status').textContent;
+  } finally {button.disabled = picker.disabled = false;}
 };
 field('reset-image').onclick = () => {
   revision++; photo.value = ''; encoded = ''; originalImage = defaultImage; preview.src = defaultImage;
