@@ -7,7 +7,7 @@ html, body { touch-action: auto; }
 .news-controls button:disabled { opacity:.23; cursor:default; }
 .news-track { display:grid; grid-auto-flow:column; gap:12px; grid-auto-columns:calc(40% - 9.6px); overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .news-track::-webkit-scrollbar { display:none; }
-.news-track article { min-width:0; align-self:start; }
+.news-track article { min-width:0; align-self:start; border:0; padding:0; }
 .news-track a { text-decoration:none; color:inherit; display:block; }
 .news-track img { width:100%; aspect-ratio: 55 / 32; object-fit:cover; display:block; }
 .news-track h3 { margin:10px 0 4px; min-height:3.3em; text-align:left; font-family:inherit; font-size:clamp(13px,1.45vw,20px); font-weight:500; line-height:1.65; overflow-wrap:anywhere; word-break:normal; }
