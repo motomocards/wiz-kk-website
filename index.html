@@ -11,16 +11,17 @@ body::before {
   background: linear-gradient(125deg, #fff 8%, #f5f5f5 54%, #dedede 100%);
 }
 body { isolation: isolate; }
-.brand { display: inline-flex; align-items: center; gap: .7rem; white-space: nowrap; }
-.brand svg { width: 3.3rem; }
+.brand { display: inline-flex; align-items: center; gap: .35rem; white-space: nowrap; }
+.brand b { font: italic 900 1.55rem/1 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.1em; color: #141618; }
 .brand span { font-size: .88rem; font-weight: 500; }
 .hero h1 { width: min(62%, 580px); margin: 0 0 clamp(32px, 5vw, 72px); color: #535353; }
-.hero h1 svg { width: 100%; display: block; }
+.hero h1 { font: italic 900 clamp(5rem, 15vw, 14rem)/.82 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.095em; color: #141618; white-space: nowrap; }
+.hero h1::after { content: ""; display: inline-block; width: .16em; height: .16em; margin-left: .08em; background: #315ddd; transform: skewX(-12deg); }
 .intro h2, .heading, h3 { font-weight: 500; }
 .intro h2 { letter-spacing: .015em; }
 .heading { letter-spacing: -.035em; }
 @media(max-width:650px) {
-  .hero h1 { width: 74%; }
+  .hero h1 { width: 100%; font-size: clamp(6rem, 27vw, 11rem); }
   .wide { display: none; }
   header { flex-wrap: wrap; }
 }
@@ -85,18 +86,8 @@ body { isolation: isolate; }
   .reveal-item { opacity: 1; filter: none; transform: none; transition: none; }
 }
 </style></head><body id="top"><a class="skip" href="#main">本文へ</a><div class="wrap">
-<header><a class="brand" href="#top"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 394 120" fill="currentColor" aria-hidden="true" focusable="false">
-  <path d="M3 36C27 36 39 22 54 22c10 0 13 5 9 18L51 78c-4 13-2 18 4 18 14 0 36-38 49-70h17l-16 53c-3 11-2 17 4 17 18 0 50-44 55-66 2-8 0-13-4-16 10-3 17 2 15 13-1 8-6 17-12 26 9 2 21-2 31-9l2 4c-13 9-25 12-36 10-16 24-36 45-55 45-14 0-18-11-14-27l3-11c-12 21-28 38-45 38-15 0-19-10-14-27l13-40c2-7 1-9-3-9-9 0-25 13-41 13z"/>
-  <path d="M198 40h17l-15 43c-3 9-2 13 3 13 10 0 28-16 39-31l4 3c-14 19-33 35-49 35-13 0-17-8-12-23z"/>
-  <path fill="#F24135" d="M214 4c-1 10 0 14 8 18-9 1-14 6-18 15 1-11-1-15-8-18 9-2 14-7 18-15z"/>
-  <path d="M236 58c10-14 19-23 34-23 12 0 20 6 32 3l2 4-57 49c12-2 23-1 40 2 32 6 67 5 102-7l2 3c-35 17-76 21-110 15-22-4-39-8-59-1l-2-5 59-51c-9 1-15-2-21-2-7 0-12 5-19 15z"/>
-</svg><span>WIZ株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="#contact">お問い合わせ</a></nav></header>
-<main id="main"><section class="hero"><h1 aria-label="WIZ株式会社"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 394 120" fill="currentColor" aria-hidden="true" focusable="false">
-  <path d="M3 36C27 36 39 22 54 22c10 0 13 5 9 18L51 78c-4 13-2 18 4 18 14 0 36-38 49-70h17l-16 53c-3 11-2 17 4 17 18 0 50-44 55-66 2-8 0-13-4-16 10-3 17 2 15 13-1 8-6 17-12 26 9 2 21-2 31-9l2 4c-13 9-25 12-36 10-16 24-36 45-55 45-14 0-18-11-14-27l3-11c-12 21-28 38-45 38-15 0-19-10-14-27l13-40c2-7 1-9-3-9-9 0-25 13-41 13z"/>
-  <path d="M198 40h17l-15 43c-3 9-2 13 3 13 10 0 28-16 39-31l4 3c-14 19-33 35-49 35-13 0-17-8-12-23z"/>
-  <path fill="#F24135" d="M214 4c-1 10 0 14 8 18-9 1-14 6-18 15 1-11-1-15-8-18 9-2 14-7 18-15z"/>
-  <path d="M236 58c10-14 19-23 34-23 12 0 20 6 32 3l2 4-57 49c12-2 23-1 40 2 32 6 67 5 102-7l2 3c-35 17-76 21-110 15-22-4-39-8-59-1l-2-5 59-51c-9 1-15-2-21-2-7 0-12 5-19 15z"/>
-</svg></h1><div class="intro"><h2>走る人、つくる人、その文化を伝える。</h2><p>WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></div></section>
+<header><a class="brand" href="#top"><b>WIZ</b><span>株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="#contact">お問い合わせ</a></nav></header>
+<main id="main"><section class="hero"><h1 aria-label="WIZ株式会社">WIZ</h1><div class="intro"><h2>走る人、つくる人、その文化を伝える。</h2><p>WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></div></section>
 <section class="group" id="services"><h2 class="heading"><span lang="en">Services</span><small>事業内容</small></h2><div class="service-grid">
 <article><h3>アプリ開発</h3><p>ライダー同士の交流や情報交換をテーマに、スマートフォンアプリを企画・開発します。</p></article>
 <article><h3>Webサイト制作</h3><p>ショップやブランドが大切にする言葉とビジュアルを整理し、事業や作品を紹介するWebサイトを制作します。</p></article>
