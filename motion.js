@@ -3,8 +3,8 @@
   const loader = document.getElementById('intro-loader');
   const page = document.querySelector('.wrap');
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const started = window.wizIntroStarted || performance.now();
   let ready = !root.classList.contains('intro-loading');
+  let finishing = false;
   const pendingLines = new Set();
 
   function revealLine(line) {
@@ -12,22 +12,28 @@
     line.chars.forEach(char => char.classList.add('is-readable'));
   }
   function finishIntro() {
-    if (ready) return;
-    ready = true;
+    if (ready || finishing) return;
+    finishing = true;
     clearTimeout(window.wizIntroSafety);
-    page.inert = false;
-    root.classList.remove('intro-loading');
-    root.classList.add('intro-ready');
-    loader.setAttribute('aria-hidden', 'true');
+    loader.classList.add('is-exiting');
+    // Reveal the logo only after the loading overlay has fully disappeared.
     setTimeout(() => {
-      pendingLines.forEach(revealLine);
-      pendingLines.clear();
-    }, preference.matches ? 0 : 260);
-    setTimeout(() => { loader.hidden = true; }, 560);
+      ready = true;
+      page.inert = false;
+      loader.hidden = true;
+      loader.setAttribute('aria-hidden', 'true');
+      root.classList.remove('intro-loading');
+      root.classList.add('intro-ready');
+      setTimeout(() => {
+        pendingLines.forEach(revealLine);
+        pendingLines.clear();
+      }, preference.matches ? 0 : 260);
+    }, preference.matches ? 0 : 560);
   }
   if (!ready) page.inert = true;
   loader.querySelector('button').addEventListener('click', finishIntro);
-  setTimeout(finishIntro, Math.max(0, 3000 - (performance.now() - started)));
+  clearTimeout(window.wizIntroSafety);
+  setTimeout(finishIntro, 3000);
   window.addEventListener('pageshow', event => {
     if (event.persisted) finishIntro();
   });

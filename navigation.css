@@ -2,7 +2,26 @@
   --page-gutter: clamp(20px, 5vw, 88px);
   --header-side: max(var(--page-gutter), calc((100vw - 1560px) / 2 + var(--page-gutter)));
 }
-html { scroll-padding-top: 100px; }
+html {
+  scroll-padding-top: 100px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  touch-action: pan-y pinch-zoom;
+}
+body { width: 100%; overflow-wrap: anywhere; }
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
+  .wrap { overflow: clip; }
+}
+.wrap, main, .story-chapters, .chapter-scene, .chapter-copy,
+.service-story, .service-story > div { min-width: 0; }
+.site-header .brand { min-width: 0; }
+.site-header .brand .wiz-mark { flex-shrink: 0; }
 .site-header { border: 0; }
 .menu-toggle { display: none; }
 .js .site-header {
@@ -86,6 +105,10 @@ html { scroll-padding-top: 100px; }
   .js .site-header { min-height: 72px; padding-block: 14px; gap: 12px; }
   .site-header .brand { gap: 13px; }
   .site-header .brand span { font-size: .78rem; }
+}
+@media (max-width: 360px) {
+  .site-header .brand { gap: 10px; }
+  .site-header .brand span { font-size: .7rem; }
 }
 @media print {
   .js .site-header { position: static; opacity: 1; visibility: visible; transform: none; }

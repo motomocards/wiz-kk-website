@@ -2,7 +2,6 @@
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <script>
 document.documentElement.classList.add('js', 'intro-loading');
-window.wizIntroStarted = performance.now();
 window.wizIntroSafety = setTimeout(() => {
   document.documentElement.classList.remove('intro-loading');
   document.documentElement.classList.add('intro-ready');
@@ -119,8 +118,8 @@ body { overflow-x: clip; }
 
 .hero { padding-bottom: clamp(46px, 7vw, 110px); }
 #services { display: block; padding-top: clamp(16px, 2.5vw, 36px); }
-#services .heading { text-align: center; font-weight: 400; margin-bottom: clamp(20px,2.5vw,36px); }
-#services .heading > span { font-size: clamp(1.4rem,2.4vw,2rem); letter-spacing: .035em; }
+#services .heading { text-align: center; font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 400; margin-bottom: clamp(20px,2.5vw,36px); }
+#services .heading > span { font-size: inherit; letter-spacing: .035em; }
 #services .heading small { display: block; margin: 6px 0 0; font-size: .8125rem; }
 .company-note { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; }
 .contact-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 1.4em; border: 1px solid #858585; text-decoration: none; font-size: .875rem; }
@@ -181,13 +180,13 @@ body { overflow-x: clip; }
 
 .story-prologue { max-width: 1120px; margin-inline: auto; padding: clamp(60px, 9vw, 135px) 0 clamp(100px, 15vw, 220px); }
 .story-eyebrow { font-size: .875rem; font-weight: 500; letter-spacing: .1em; line-height: 1.8; }
-.story-prologue h2 { margin: 28px 0 46px; font-size: clamp(1.9rem, 3.8vw, 3.8rem); font-weight: 500; line-height: 1.7; letter-spacing: .025em; }
+.story-prologue h2 { margin: 28px 0 46px; font-size: clamp(1.65rem, 2.7vw, 2.6rem); font-weight: 500; line-height: 1.7; letter-spacing: .025em; }
 .story-prologue-copy { max-width: 43rem; margin-left: auto; }
 .story-prologue-copy p, .chapter-copy p, .service-story p { font-size: 1rem; line-height: 2.2; letter-spacing: .025em; }
 .story-prologue-copy p + p, .chapter-copy p + p, .service-story p + p { margin-top: 1.5em; }
 .story-chapters { max-width: 1120px; margin-inline: auto; }
 .story-chapter { padding: clamp(65px, 9vw, 140px) 0; }
-.chapter-heading h3 { margin: 24px 0 40px; font-size: clamp(1.8rem, 3.7vw, 3.5rem); font-weight: 500; line-height: 1.75; letter-spacing: .02em; }
+.chapter-heading h3 { margin: 24px 0 40px; font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 500; line-height: 1.75; letter-spacing: .02em; }
 .chapter-copy { max-width: 43rem; margin-left: auto; }
 .service-story {
   display: grid;
@@ -197,27 +196,27 @@ body { overflow-x: clip; }
   border: 0;
   background: none;
 }
-.service-story h4 { margin: 0; font-size: clamp(1.25rem, 2vw, 1.7rem); font-weight: 500; line-height: 1.8; }
+.service-story h4 { margin: 0; font-size: clamp(1.125rem, 1.5vw, 1.4rem); font-weight: 500; line-height: 1.8; }
 .service-story > div { max-width: 43rem; }
 .story-closing { padding: clamp(60px, 10vw, 150px) 0 clamp(120px, 17vw, 250px); text-align: center; }
-.story-closing p { font-size: clamp(1.7rem, 3.4vw, 3.2rem); line-height: 1.9; letter-spacing: .04em; }
+.story-closing p { font-size: clamp(1.5rem, 2.5vw, 2.25rem); line-height: 1.9; letter-spacing: .04em; }
 .story-closing > span { display: block; margin-top: 30px; font-size: 1rem; }
 @media(max-width:650px) {
   .story-prologue { padding: 20px 0 125px; }
-  .story-prologue h2 { margin: 25px 0 36px; font-size: clamp(1.6rem, 6.5vw, 2.1rem); }
+  .story-prologue h2 { margin: 25px 0 36px; font-size: clamp(1.35rem, 5.6vw, 1.6rem); }
   .story-eyebrow { font-size: .8125rem; letter-spacing: .05em; }
   .story-chapter { padding: 65px 0; }
-  .chapter-heading h3 { margin: 24px 0 34px; font-size: clamp(1.45rem, 6.2vw, 2rem); }
+  .chapter-heading h3 { margin: 24px 0 34px; font-size: clamp(1.25rem, 5.2vw, 1.5rem); }
   .service-story { grid-template-columns: 1fr; gap: 22px; padding-top: 50px; }
-  .service-story h4 { font-size: 1.35rem; }
+  .service-story h4 { font-size: 1.125rem; }
   .story-closing { padding: 25px 0 135px; }
-  .story-closing p { font-size: clamp(1.5rem, 6.2vw, 2rem); }
+  .story-closing p { font-size: clamp(1.35rem, 5.6vw, 1.6rem); }
 }
 </style>
-<link rel="stylesheet" href="navigation.css">
-<link rel="stylesheet" href="motion.css">
+<link rel="stylesheet" href="navigation.css?v=20261124-2">
+<link rel="stylesheet" href="motion.css?v=20261124-2">
 <script src="navigation.js" defer></script>
-<script src="motion.js" defer></script>
+<script src="motion.js?v=20261124-2" defer></script>
 </head><body id="top"><div class="intro-loader" id="intro-loader" role="status" aria-label="サイトを表示しています"><span class="loading-ring" aria-hidden="true"></span><span class="sr-only">サイトを表示しています</span><button class="intro-skip" type="button">スキップ</button></div><a class="skip" href="#main">本文へ</a><div class="wrap">
 <header class="site-header"><a class="brand" href="#top"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="header-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#header-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg><span>WIZ k.K. ウィズ株式会社</span></a><button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="site-nav" id="site-menu" aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
 <main id="main"><section class="hero"><div class="hero-stage"><h1 aria-label="WIZ株式会社"><span class="hero-mark"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="hero-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#hero-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg></span></h1><div class="intro"><h2>人と人をつなぎ、<br class="mobile-break">カルチャーを、その先へ。</h2></div></div><p class="hero-description">WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></section>

@@ -11,6 +11,11 @@
   transition: opacity .55s ease, visibility 0s .55s;
 }
 .js.intro-loading .intro-loader { opacity: 1; visibility: visible; transition: none; }
+.js.intro-loading .intro-loader.is-exiting {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .55s ease, visibility 0s .55s;
+}
 .intro-loader[hidden] { display: none; }
 .loading-ring {
   display: block;
@@ -38,9 +43,13 @@
 }
 .intro-loading { overflow: hidden; }
 .intro-loading .site-header { visibility: hidden !important; }
-.js .hero h1 { transition: opacity 1.65s ease, filter 1.65s ease, transform 1.65s cubic-bezier(.18,.7,.25,1); }
-.js.intro-loading .hero h1 { opacity: 0; filter: blur(18px); transform: translateY(28px); }
-.js.intro-ready .hero h1 { opacity: 1; filter: blur(0); transform: none; }
+.js.intro-loading .hero h1 { opacity: 0; filter: blur(18px); transform: translateY(24px); }
+.js.intro-ready .hero h1 { animation: hero-arrive 2.2s cubic-bezier(.18,.7,.25,1) both; }
+@keyframes hero-arrive {
+  0% { opacity: 0; filter: blur(18px); transform: translateY(24px); }
+  35% { opacity: .35; filter: blur(10px); }
+  100% { opacity: 1; filter: blur(0); transform: none; }
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -78,6 +87,7 @@
   transform: translateX(-50%);
   z-index: -1;
   overflow: hidden;
+  contain: paint;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(transparent, #000 15%, #000 85%, transparent);
   mask-image: linear-gradient(transparent, #000 15%, #000 85%, transparent);
@@ -112,11 +122,12 @@
 @media(prefers-reduced-motion:reduce) {
   .loading-ring { animation: none; }
   .js .hero h1, .text-reveal .text-char.is-readable, .js .intro-loader { transition: none; }
+  .js.intro-ready .hero h1 { animation: none; }
   .js.intro-loading .hero h1 { transform: none; filter: none; }
   .photo-motion { transform: none; will-change: auto; }
 }
 @media print {
   .intro-loader, .chapter-photo { display: none !important; }
-  .js .hero h1, .text-reveal .text-char { opacity: 1 !important; filter: none !important; transform: none !important; }
+  .js .hero h1, .text-reveal .text-char { opacity: 1 !important; filter: none !important; transform: none !important; animation: none !important; }
   .intro-loading { overflow: visible; }
 }
