@@ -1,0 +1,4 @@
+---
+layout: null
+---
+[{% assign files = site.static_files | sort: "name" | reverse %}{% assign comma = false %}{% for file in files %}{% assign prefix = file.name | slice: 0, 9 %}{% if prefix == 'wiz-post-' and file.extname == '.json' %}{% if comma %},{% endif %}{{ file.path | jsonify }}{% assign comma = true %}{% endif %}{% endfor %}]

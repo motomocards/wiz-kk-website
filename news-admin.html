@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>お知らせ管理 | WIZ株式会社</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}input{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
+</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
+<form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
+<label for="photo">画像</label><input id="photo" type="file" accept="image/*" required>
+<label for="target">リンク先 <small>（任意）</small></label><input id="target" type="url" placeholder="https://">
+<h2>プレビュー</h2><img id="preview" hidden alt=""><output id="caption"></output>
+<p>投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
+<button>投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form></main>
+<script>
+const field = id => document.getElementById(id);
+const form = field('editor'), photo = field('photo'), preview = field('preview');
+let revision = 0, encoded = '', filename = '';
+form.oninput = () => { filename = ''; field('upload').hidden = true; field('status').textContent = ''; field('caption').textContent = field('headline').value; };
+photo.onchange = async () => {
+  const n = ++revision;
+  encoded = ''; preview.hidden = true;
+  if (!photo.files.length) return;
+  const address = URL.createObjectURL(photo.files[0]);
+  try {
+    const image = new Image(); image.src = address; await image.decode();
+    if (n !== revision) return;
+    const canvas = document.createElement('canvas');
+    const scale = Math.min(1, 1100 / Math.max(image.width,image.height));
+    canvas.width = Math.max(1,Math.round(image.width*scale)); canvas.height = Math.max(1,Math.round(image.height*scale));
+    const ctx = canvas.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.drawImage(image,0,0,canvas.width,canvas.height);
+    encoded = canvas.toDataURL('image/jpeg',0.82); preview.src = encoded; preview.hidden = false;
+  } catch { if (n === revision) field('status').textContent = '画像を読み込めません。JPEGまたはPNGでお試しください。'; }
+  finally { URL.revokeObjectURL(address); }
+};
+form.onsubmit = event => {
+  event.preventDefault();
+  const title = field('headline').value.trim(), url = field('target').value.trim();
+  if (!title || !encoded || (url && !/^https?:\/\//i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先には https:// または http:// から始まるURLを指定できます。'; return;}
+  filename ||= 'wiz-post-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
+  const data = new Blob([JSON.stringify({title,image:encoded,url})],{type:'application/json'});
+  const link = document.createElement('a'); link.href = URL.createObjectURL(data); link.download = filename; link.click();
+  setTimeout(()=>URL.revokeObjectURL(link.href),60000);
+  field('status').textContent = '保存したファイル名：'+filename;
+  field('upload').hidden = false;
+};
+</script></body></html>
