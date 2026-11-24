@@ -19,7 +19,11 @@ body { isolation: isolate; }
 .brand span { font-size: .88rem; font-weight: 500; }
 .hero h1 { width: min(62%, 580px); margin: 0 0 clamp(32px, 5vw, 72px); color: #535353; }
 .hero h1 { font: italic 900 clamp(5rem, 15vw, 14rem)/.82 "Helvetica Neue", Arial, sans-serif; letter-spacing: -.095em; color: #141618; white-space: nowrap; }
-.hero h1::after { content: ""; display: inline-block; width: .16em; height: .16em; margin-left: .08em; background: #46b8f4; transform: skewX(-12deg); }
+body { overflow-x: clip; }
+.hero-mark { position: relative; display: inline-block; vertical-align: middle; line-height: 0; }
+.hero-mark svg { display: block; }
+.hero-mark::after { content: ""; position: absolute; left: 83.5%; bottom: 0; width: 100vw; height: 20%; background: #46b8f4; }
+
 .intro h2, .heading, h3 { font-weight: 500; }
 .intro h2 { letter-spacing: .015em; }
 .heading { letter-spacing: -.035em; }
@@ -30,9 +34,9 @@ body { isolation: isolate; }
 }
 
 @media(min-width:900px) {
-  .hero { display: grid; grid-template-columns: 1.1fr 1fr; align-items: end; gap: 7%;
+  .hero { display: block;
     padding-block: clamp(110px, 13vw, 200px); }
-  .hero h1 { width: 100%; margin: 0; }
+  .hero h1 { width: 100%; margin: 0 0 clamp(32px,4vw,60px); }
   .intro { padding: 0; }
   .intro h2 { font-size: clamp(1.5rem, 2.1vw, 2.35rem); line-height: 1.7; }
   .intro .wide { display: none; }
@@ -102,17 +106,12 @@ body { isolation: isolate; }
   .contact-button { padding: 0 .65em; }
   .company-row > div { min-width: 0; }
 }
-.wiz-mark { display:inline-block; padding-right:.12em; font-weight:inherit; }
-@supports ((background-clip:text) or (-webkit-background-clip:text)) {
-  .brand .wiz-mark, .hero .wiz-mark {
-    background:linear-gradient(to right,#f18cbd,#b08ae8,#46b8f4);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-}
-@media(forced-colors:active) { .brand .wiz-mark, .hero .wiz-mark { background:none; color:CanvasText; } }
+.wiz-mark { display:inline-block; width:auto; height:.76em; overflow:visible; }
+.brand .wiz-mark { height:1.2rem; }
+@media(forced-colors:active) { .wiz-mark path { fill:CanvasText; } }
 </style></head><body id="top"><a class="skip" href="#main">本文へ</a><div class="wrap">
-<header><a class="brand" href="#top"><b class="wiz-mark" aria-hidden="true">WIZ</b><span>WIZ k.K. ウィズ株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
-<main id="main"><section class="hero"><h1 aria-label="WIZ株式会社"><b class="wiz-mark">WIZ</b></h1><div class="intro"><h2>走る人、つくる人、その文化を伝える。</h2><p>WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></div></section>
+<header><a class="brand" href="#top"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="header-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#header-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg><span>WIZ k.K. ウィズ株式会社</span></a><nav aria-label="メインナビゲーション"><a href="#services">事業内容</a><a href="#company">会社概要</a><a href="contact.html">お問い合わせ</a></nav></header>
+<main id="main"><section class="hero"><h1 aria-label="WIZ株式会社"><span class="hero-mark"><svg class="wiz-mark" viewBox="0 0 234 100" aria-hidden="true" focusable="false"><defs><linearGradient id="hero-wiz"><stop stop-color="#f18cbd"/><stop offset=".5" stop-color="#b08ae8"/><stop offset="1" stop-color="#46b8f4"/></linearGradient></defs><g fill="url(#hero-wiz)"><g transform="matrix(1 0 -.19 1 19 0)"><path d="M0 0h23l10 62L46 0h22l13 62L91 0h23L92 100H70L57 43l-13 57H22z M112 0h22v100h-22z M132 0h83v19l-51 61h51v20h-83V81l51-61h-51z"/></g></g></svg></span></h1><div class="intro"><h2>走る人、つくる人、その文化を伝える。</h2><p>WIZ株式会社は、関西を拠点に、モーターサイクルカルチャーを軸とした<br class="wide">アプリ開発、Web・映像制作、プロモーションを手がけています。</p></div></section>
 <section class="group" id="services"><h2 class="heading"><span lang="en">Services</span><small>事業内容</small></h2><div class="service-grid">
 <article><h3>アプリ開発</h3><p>ライダー同士の交流や情報交換をテーマに、スマートフォンアプリを企画・開発します。</p></article>
 <article><h3>Webサイト制作</h3><p>ショップやブランドが大切にする言葉とビジュアルを整理し、事業や作品を紹介するWebサイトを制作します。</p></article>
