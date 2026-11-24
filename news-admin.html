@@ -3,49 +3,28 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}textarea,input,select{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
 textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhere}#delete-post{background:white;display:inline-block;padding:8px 16px;border:1px solid #995858;border-radius:4px;color:#873f3f;text-decoration:none}#delete-row{margin-top:32px}</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
+<form id="login">
+<div id="setup"><p>このブラウザで使う管理用パスワードを12文字以上で設定します。GitHubとの接続は初回のみです。</p>
+<label for="access">サイト専用のGitHubトークン</label><input id="access" type="password" autocomplete="off" spellcheck="false">
+<small><a href="https://github.com/settings/personal-access-tokens/new?name=WIZ%20News&amp;target_name=motomocards&amp;contents=write" target="_blank" rel="noopener">トークンを作成</a>し、対象を wiz-kk-website のみに、Contents を Read and write に設定してください。</small></div>
+<label for="password">管理用パスワード</label><input id="password" type="password" required autocomplete="current-password">
+<p><button id="enter">ログイン</button></p><button id="reconnect" type="button" hidden>接続を再設定</button><p id="auth-status" role="status"></p></form>
+<section id="panel" hidden><button id="logout" type="button">ログアウト</button>
 <label for="posts">編集するお知らせ</label><select id="posts"><option value="">新規投稿</option></select><p id="list-status" role="status"></p>
 <form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
 <label for="body-text">本文</label><textarea id="body-text" rows="7" placeholder="本文にURLを書くとリンクになります"></textarea>
 <label for="photo">サムネイル画像1枚 <small>（任意）</small></label><input id="photo" type="file" accept="image/*">
 <button type="button" id="reset-image">標準画像に戻す</button><label for="target">リンク先 <small>（任意）</small></label><input id="target" type="text" inputmode="url" placeholder="https://">
 <h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output><div id="body-preview"></div>
-<p id="instructions">投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
-<button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form><section id="delete-row" hidden>
-<details id="delete-auth"><summary>削除用の認証</summary>
-<label for="delete-token">GitHubの管理用トークン</label><input id="delete-token" type="password" autocomplete="off" spellcheck="false">
-<small>この画面を開いている間だけ使用します。初回は <a href="https://github.com/settings/personal-access-tokens/new?name=WIZ%20News&amp;target_name=motomocards&amp;contents=write" target="_blank" rel="noopener">GitHubでトークンを作成</a>し、対象を wiz-kk-website のみにして Contents を Read and write に設定してください。</small></details>
-<p><button type="button" id="delete-post">投稿を削除</button></p></section></main>
+<button id="save">公開する</button><p role="status" id="status"></p></form>
+<p id="delete-row" hidden><button type="button" id="delete-post">投稿を削除</button></p></section></main>
 <script src="/news-text.js"></script>
 <script>
 const field = id => document.getElementById(id);
 const form = field('editor'), photo = field('photo'), preview = field('preview');
 const defaultImage = preview.getAttribute('src');
-const picker = field('posts'), upload = field('upload');
-const newInstructions = field('instructions').textContent, newUpload = upload.href;
-const entries = new Map();
-let revision = 0, encoded = '', filename = '', originalImage = defaultImage;
-async function readJSON(path) {
-  const response = await fetch(path, {cache:'no-store'});
-  if (!response.ok) throw new Error();
-  return response.json();
-}
-async function loadPosts() {
-  try {
-    const paths = await readJSON('/news-feed.json');
-    const results = await Promise.allSettled(paths.map(async path => {
-      if (!/^\/wiz-post-[a-zA-Z0-9-]+\.json$/.test(path)) throw new Error();
-      return [path, await readJSON(path)];
-    }));
-    for (const result of results) {
-      if (result.status !== 'fulfilled') continue;
-      const [path, item] = result.value;
-      entries.set(path,item);
-      picker.add(new Option(item.title,path));
-    }
-    if (entries.size !== paths.length) throw new Error();
-  } catch {field('list-status').textContent = '一覧をすべて読み込めませんでした。ページを再読み込みしてください。';}
-}
-loadPosts();
+const picker = field('posts'), entries = new Map(), versions = new Map();
+let revision = 0, encoded = '', filename = '', originalImage = defaultImage, token = '';
 picker.onchange = () => {
   revision++; form.reset(); encoded = ''; filename = '';
   const item = entries.get(picker.value);
@@ -55,56 +34,14 @@ picker.onchange = () => {
   field('body-text').value = item?.body || '';
   renderNewsBody(field('body-preview'),field('body-text').value);
   field('caption').textContent = field('headline').value;
-  field('status').textContent = ''; upload.hidden = true;
-  field('save').textContent = item ? '更新内容をコピー' : '投稿ファイルを保存';
-  field('instructions').textContent = item ? '更新内容をコピーし、GitHubの編集画面でこの投稿の本文全体に貼り替えて「Commit changes」を押してください。' : newInstructions;
-  upload.href = item ? 'https://github.com/motomocards/wiz-kk-website/edit/main'+picker.value : newUpload;
-  upload.textContent = item ? 'この投稿をGitHubで更新 ↗' : 'GitHubの公開画面を開く ↗';
-};
-field('delete-post').onclick = async () => {
-  const path = picker.value, item = entries.get(path);
-  const tokenField = field('delete-token'), token = tokenField.value.trim();
-  const button = field('delete-post'), status = field('list-status');
-  if (!item || button.disabled) return;
-  if (!token) {
-    field('delete-auth').open = true;
-    tokenField.focus();
-    status.textContent = '管理用トークンを入力し、「投稿を削除」を押してください。';
-    return;
-  }
-  button.disabled = picker.disabled = true;
-  const endpoint = 'https://api.github.com/repos/motomocards/wiz-kk-website/contents'+path;
-  const headers = {Authorization:'Bearer '+token, Accept:'application/vnd.github+json'};
-  status.textContent = '削除中…';
-  try {
-    const options = {headers, cache:'no-store', redirect:'error', credentials:'omit'};
-    const latest = await fetch(endpoint+'?ref=main',options);
-    if (!latest.ok) throw new Error(String(latest.status));
-    const file = await latest.json();
-    const result = await fetch(endpoint,{...options, method:'DELETE',
-      headers:{...headers,'Content-Type':'application/json'},
-      body:JSON.stringify({branch:'main',message:'Delete news: '+item.title,sha:file.sha})});
-    if (!result.ok) throw new Error(String(result.status));
-    entries.delete(path);
-    picker.selectedOptions[0].remove();
-    picker.value = ''; picker.onchange();
-    status.textContent = '「'+item.title+'」を削除しました。公開ページに順次反映されます。';
-    status.scrollIntoView({block:'center'});
-  } catch (error) {
-    if (['401','403'].includes(error.message)) {
-      field('delete-auth').open = true;
-      field('status').textContent = '認証できません。トークンの期限と書き込み権限を確認してください。';
-    } else {
-      field('status').textContent = '削除結果を確認できません。ページを再読み込みして投稿の状態を確認してください。';
-    }
-    status.textContent = field('status').textContent;
-  } finally {button.disabled = picker.disabled = false;}
+  field('status').textContent = '';
+  field('save').textContent = item ? '更新する' : '公開する';
 };
 field('reset-image').onclick = () => {
   revision++; photo.value = ''; encoded = ''; originalImage = defaultImage; preview.src = defaultImage;
   form.oninput();
 };
-form.oninput = () => { renderNewsBody(field('body-preview'),field('body-text').value); filename = ''; field('upload').hidden = true; field('status').textContent = ''; field('caption').textContent = field('headline').value; };
+form.oninput = () => { renderNewsBody(field('body-preview'),field('body-text').value);  field('status').textContent = ''; field('caption').textContent = field('headline').value; };
 photo.onchange = async () => {
   const n = ++revision;
   encoded = ''; preview.src = originalImage;
@@ -125,21 +62,8 @@ form.onsubmit = async event => {
   event.preventDefault();
   const title = field('headline').value.trim(), url = field('target').value.trim();
   if (!title || (photo.files.length && !encoded) || (url && !/^(https?:\/\/|\/(?!\/)|#)/i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先にはサイト内のパス、ページ内リンク、またはWebサイトのURLを指定してください。'; return;}
-  const path = picker.value;
-  const payload = JSON.stringify({...entries.get(path), title,body:field('body-text').value,image:encoded || originalImage,url});
-  if (path) {
-    try {
-      await navigator.clipboard.writeText(payload);
-      field('status').textContent = '更新内容をコピーしました。GitHubで貼り替えて更新してください。';
-      upload.hidden = false;
-    } catch {field('status').textContent = 'コピーを許可してから、もう一度更新内容をコピーしてください。';}
-    return;
-  }
-  filename ||= 'wiz-post-entry-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
-  const data = new Blob([payload],{type:'application/json'});
-  const link = document.createElement('a'); link.href = URL.createObjectURL(data); link.download = filename; link.click();
-  setTimeout(()=>URL.revokeObjectURL(link.href),60000);
-  field('status').textContent = '保存したファイル名：'+filename;
-  field('upload').hidden = false;
+  filename ||= '/wiz-post-entry-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
+  const path = picker.value || filename;
+  await writePost(path,{...entries.get(path),title,body:field('body-text').value,image:encoded || originalImage,url});
 };
-</script></body></html>
+</script><script src="/news-login.js?v=1"></script></body></html>
