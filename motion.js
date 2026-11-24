@@ -40,6 +40,7 @@
 
   const blocks = [];
   let lineObserver;
+  let unreadLines = new Map();
   let resizeTimer;
   const segmenter = 'Segmenter' in Intl ? new Intl.Segmenter('ja', { granularity: 'grapheme' }) : null;
   if (!preference.matches && 'IntersectionObserver' in window) {
@@ -78,6 +79,7 @@
       lineObserver?.disconnect();
       pendingLines.clear();
       const lines = new Map();
+      unreadLines = lines;
       blocks.forEach(({ chars }) => {
         let group;
         let top;
@@ -95,17 +97,44 @@
       lineObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
-          revealLine(lines.get(entry.target));
+          const line = lines.get(entry.target);
+          if (!line) return;
+          revealLine(line);
           lineObserver.unobserve(entry.target);
+          lines.delete(entry.target);
         });
-      }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+      // IntersectionObserver percentage margins use width, so use viewport-height pixels.
+      // A line begins appearing after it reaches 45% of the screen from the top.
+      }, { rootMargin: `0px 0px -${Math.round(innerHeight * .55)}px 0px`, threshold: 0 });
       lines.forEach(line => {
-        if (line.chars.every(char => char.classList.contains('is-readable'))) return;
+        if (line.chars.every(char => char.classList.contains('is-readable'))) {
+          lines.delete(line.first);
+          return;
+        }
+        // The opening copy belongs to the logo introduction, before any scrolling.
+        if (line.first.closest('.hero-stage')) {
+          revealLine(line);
+          lines.delete(line.first);
+          return;
+        }
         lineObserver.observe(line.first);
+      });
+      revealAtPageEnd();
+    }
+    function revealAtPageEnd() {
+      if (scrollY + innerHeight < root.scrollHeight - 2) return;
+      // The final lines must remain readable when no further scrolling is possible.
+      unreadLines.forEach(line => {
+        const rect = line.first.getBoundingClientRect();
+        if (rect.top >= innerHeight || rect.bottom < 0) return;
+        revealLine(line);
+        lineObserver.unobserve(line.first);
+        unreadLines.delete(line.first);
       });
     }
     requestAnimationFrame(measureLines);
     document.fonts?.ready.then(measureLines);
+    window.addEventListener('scroll', revealAtPageEnd, { passive: true });
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(measureLines, 180);
