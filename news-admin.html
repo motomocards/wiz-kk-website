@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>お知らせ管理 | WIZ株式会社</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}textarea,input,select{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
-textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhere}</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
+textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhere}#delete-post{display:inline-block;padding:8px 16px;border:1px solid #995858;border-radius:4px;color:#873f3f;text-decoration:none}#delete-row{margin-top:32px}</style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
 <label for="posts">編集するお知らせ</label><select id="posts"><option value="">新規投稿</option></select><p id="list-status" role="status"></p>
 <form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
 <label for="body-text">本文</label><textarea id="body-text" rows="7" placeholder="本文にURLを書くとリンクになります"></textarea>
@@ -10,7 +10,7 @@ textarea{resize:vertical}#body-preview{white-space:pre-wrap;overflow-wrap:anywhe
 <button type="button" id="reset-image">標準画像に戻す</button><label for="target">リンク先 <small>（任意）</small></label><input id="target" type="text" inputmode="url" placeholder="https://">
 <h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output><div id="body-preview"></div>
 <p id="instructions">投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
-<button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form></main>
+<button id="save">投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form><p id="delete-row" hidden><a id="delete-post" target="_blank" rel="noopener">投稿を削除</a><br><small>GitHubで削除対象を確認し、「Commit changes」で確定します。</small></p></main>
 <script src="/news-text.js"></script>
 <script>
 const field = id => document.getElementById(id);
@@ -45,6 +45,9 @@ loadPosts();
 picker.onchange = () => {
   revision++; form.reset(); encoded = ''; filename = '';
   const item = entries.get(picker.value);
+  field('delete-row').hidden = !item;
+  if (item) field('delete-post').href = 'https://github.com/motomocards/wiz-kk-website/delete/main'+picker.value;
+  else field('delete-post').removeAttribute('href');
   originalImage = item?.image || defaultImage; preview.src = originalImage;
   field('headline').value = item?.title || ''; field('target').value = item?.url || '';
   field('body-text').value = item?.body || '';

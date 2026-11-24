@@ -37,7 +37,7 @@
   }
   let paths;
   try { paths = await json('/news-feed.json'); }
-  catch { paths = ['/wiz-post-20261125-3.json','/wiz-post-20261124-2.json','/wiz-post-20261124-1.json']; }
+  catch { return; }
   const maxVisiblePosts = 10;
   for (const path of paths) {
     if (track.childElementCount >= maxVisiblePosts) break;
@@ -59,6 +59,10 @@
       box.append(image,title);
       article.append(box);
       track.append(article);
+      if (section.hidden) {
+        section.hidden = false;
+        sizeFrame();
+      }
     } catch { continue; }
   }
   sync();

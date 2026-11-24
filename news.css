@@ -1,11 +1,11 @@
 html, body { touch-action: auto; }
-.wiz-news { width: min(100%,1120px); margin: 0 auto clamp(140px,18vw,280px); scroll-margin-top: 95px; }
+.wiz-news { width:100%; text-align:left; margin: 0 0 clamp(140px,18vw,280px); scroll-margin-top: 95px; }
 .news-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
 .news-head h2 { margin:0; font:inherit; font-size:clamp(20px,2.2vw,30px); letter-spacing:.12em; }
 .news-controls { display:flex; gap:4px; }
 .news-controls button { background:transparent; color:inherit; border:0; font:24px Georgia,serif; cursor:pointer; width:44px; height:44px; }
 .news-controls button:disabled { opacity:.23; cursor:default; }
-.news-track { padding-left:var(--news-intro-inset,0px); display:grid; grid-auto-flow:column; gap:12px; grid-auto-columns:calc(40% - 9.6px); overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.news-track { padding-left:var(--news-intro-inset,0px); display:grid; justify-content:start; grid-auto-flow:column; gap:12px; grid-auto-columns:calc(40% - 9.6px); overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .news-track::-webkit-scrollbar { display:none; }
 .news-track article { min-width:0; align-self:start; border:0; padding:0; }
 .news-track a { text-decoration:none; color:inherit; display:block; }
