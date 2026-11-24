@@ -4,19 +4,20 @@
 *{box-sizing:border-box}body{margin:0;background:#f6f5f4;color:#353437;font:16px/1.7 system-ui,sans-serif}main{max-width:650px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:serif;font-weight:500}h1{margin:20px 0 32px}label{display:block;font-weight:600;margin-top:22px}input{width:100%;padding:12px;border:1px solid #bbb;background:white;border-radius:4px;font:inherit}img{width:min(100%,360px);aspect-ratio:55/32;object-fit:cover}button{padding:12px 22px;background:#36323b;color:white;border:0;border-radius:4px;font:inherit;cursor:pointer}a{color:#4d4160;text-underline-offset:4px}output{display:block;overflow-wrap:anywhere}p{margin:12px 0}small{font-weight:400}
 </style></head><body><main><a href="/#news">← 公開中のお知らせ</a><h1>お知らせ管理</h1>
 <form id="editor"><label for="headline">タイトル</label><input id="headline" required maxlength="140">
-<label for="photo">画像</label><input id="photo" type="file" accept="image/*" required>
+<label for="photo">画像 <small>（任意）</small></label><input id="photo" type="file" accept="image/*">
 <label for="target">リンク先 <small>（任意）</small></label><input id="target" type="url" placeholder="https://">
-<h2>プレビュー</h2><img id="preview" hidden alt=""><output id="caption"></output>
+<h2>プレビュー</h2><img id="preview" src="/news-default.svg" alt=""><output id="caption"></output>
 <p>投稿ファイルを保存したら、GitHubの公開画面でそのファイルを選び、「Commit changes」を押してください。</p>
 <button>投稿ファイルを保存</button><p role="status" id="status"></p><a id="upload" hidden href="https://github.com/motomocards/wiz-kk-website/upload/main" target="_blank" rel="noopener">GitHubの公開画面を開く ↗</a></form></main>
 <script>
 const field = id => document.getElementById(id);
 const form = field('editor'), photo = field('photo'), preview = field('preview');
+const defaultImage = preview.getAttribute('src');
 let revision = 0, encoded = '', filename = '';
 form.oninput = () => { filename = ''; field('upload').hidden = true; field('status').textContent = ''; field('caption').textContent = field('headline').value; };
 photo.onchange = async () => {
   const n = ++revision;
-  encoded = ''; preview.hidden = true;
+  encoded = ''; preview.src = defaultImage;
   if (!photo.files.length) return;
   const address = URL.createObjectURL(photo.files[0]);
   try {
@@ -33,9 +34,9 @@ photo.onchange = async () => {
 form.onsubmit = event => {
   event.preventDefault();
   const title = field('headline').value.trim(), url = field('target').value.trim();
-  if (!title || !encoded || (url && !/^https?:\/\//i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先には https:// または http:// から始まるURLを指定できます。'; return;}
+  if (!title || (photo.files.length && !encoded) || (url && !/^https?:\/\//i.test(url))) {field('status').textContent = 'タイトルと画像を確認してください。リンク先には https:// または http:// から始まるURLを指定できます。'; return;}
   filename ||= 'wiz-post-entry-'+new Date().toISOString().replace(/\D/g,'')+'-'+crypto.randomUUID()+'.json';
-  const data = new Blob([JSON.stringify({title,image:encoded,url})],{type:'application/json'});
+  const data = new Blob([JSON.stringify({title,image:encoded || defaultImage,url})],{type:'application/json'});
   const link = document.createElement('a'); link.href = URL.createObjectURL(data); link.download = filename; link.click();
   setTimeout(()=>URL.revokeObjectURL(link.href),60000);
   field('status').textContent = '保存したファイル名：'+filename;

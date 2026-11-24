@@ -49,7 +49,7 @@
       if (box.tagName === 'A') box.href = url.href;
       const image = new Image();
       image.alt = '';
-      image.src = item.image;
+      image.src = item.image || '/news-default.svg';
       const title = document.createElement('h3');
       const chars = segmenter ? Array.from(segmenter.segment(item.title), part => part.segment) : Array.from(item.title);
       title.textContent = chars.length >= 20 ? chars.slice(0,19).join('') + '...' : item.title;
