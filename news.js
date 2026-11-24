@@ -31,7 +31,7 @@
   new ResizeObserver(sizeFrame).observe(document.documentElement);
   new ResizeObserver(sync).observe(track);
   async function json(path) {
-    const response = await fetch(path);
+    const response = await fetch(path + '?v=6', {cache:'no-cache'});
     if (!response.ok) throw new Error('news');
     return response.json();
   }
