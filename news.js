@@ -20,6 +20,9 @@
   prev.onclick = () => step(-1);
   next.onclick = () => step(1);
   track.addEventListener('scroll', sync, {passive:true});
+  const sizeFrame = () => frame.style.setProperty('--news-half-viewport', document.documentElement.clientWidth / 2 + 'px');
+  sizeFrame();
+  new ResizeObserver(sizeFrame).observe(document.documentElement);
   new ResizeObserver(sync).observe(track);
   async function json(path) {
     const response = await fetch(path);
