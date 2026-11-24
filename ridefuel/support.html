@@ -21,14 +21,17 @@ li + li { margin-top: .7rem; }
 a { color: #285653; text-underline-offset: .22em; }
 a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 address { font-style: normal; }
-footer nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
-footer [aria-current="page"] { color: inherit; text-decoration: none; font-weight: 600; }
+header nav, footer nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+nav [aria-current="page"] { color: inherit; text-decoration: none; font-weight: 600; }
 </style></head>
 <body>
-<header><a href="/">WIZ K.K.</a><a href="/ridefuel/privacy">プライバシーポリシー</a></header>
+<header><a href="/">WIZ K.K.</a><nav aria-label="RideFuel"><a href="/ridefuel/support" aria-current="page">サポート</a>
+<a href="/ridefuel/terms">利用規約</a>
+<a href="/ridefuel/privacy">プライバシーポリシー</a></nav></header>
 <main><h1><small lang="en">RideFuel</small>サポート</h1>
 <h2>お問い合わせ</h2>
 <p>ご質問・不具合のご報告・ご要望は、<a href="mailto:info@wiz-kk.jp">info@wiz-kk.jp</a>までお送りください。iPhoneの機種、iOSのバージョン、どんなときに起きたかを書いていただけると助かります。</p>
+<p><a href="https://forms.gle/4ZiT3C55SZp3tQFa8">お問い合わせフォーム</a></p>
 <h2>よくある質問</h2>
 <h3>残りの距離がバイクのメーターと合いません</h3>
 <p>残量は、走った距離と燃費から計算した目安です。満タンから満タンまで、入れた量を記録すると、あなたのバイクの本当の燃費を学習して正確になります（Pro）。</p>
