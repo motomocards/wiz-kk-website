@@ -1,9 +1,15 @@
 (async () => {
   const track = document.querySelector('.news-track');
+  const frame = document.createElement('div');
+  frame.className = 'news-frame';
+  track.before(frame);
+  frame.append(track);
+  const segmenter = typeof Intl.Segmenter === 'function' && new Intl.Segmenter('ja', {granularity:'grapheme'});
   const [prev, next] = document.querySelectorAll('.news-controls button');
   const sync = () => {
     prev.disabled = track.scrollLeft < 1;
     next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    frame.classList.toggle("has-more", !next.disabled);
   };
   function step(direction) {
     const card = track.firstElementChild;
@@ -34,7 +40,12 @@
       image.alt = '';
       image.src = item.image;
       const title = document.createElement('h3');
-      title.textContent = item.title;
+      const chars = segmenter ? Array.from(segmenter.segment(item.title), part => part.segment) : Array.from(item.title);
+      title.textContent = chars.length >= 20 ? chars.slice(0,19).join('') + '...' : item.title;
+      if (chars.length >= 20) {
+        title.title = item.title;
+        box.setAttribute('aria-label',item.title);
+      }
       box.append(image,title);
       article.append(box);
       track.append(article);
