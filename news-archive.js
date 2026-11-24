@@ -12,6 +12,26 @@
     return img;
   }
   const id = new URLSearchParams(location.search).get('post');
+  const heading = document.querySelector('h1');
+  if (id !== null) heading.hidden = true;
+  function revealContent() {
+    heading.hidden = false;
+    if (!window.IntersectionObserver || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const observer = new IntersectionObserver(entries => {
+      let order = 0;
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const element = entry.target;
+        element.style.setProperty('--delay', Math.min(order++, 4) * 110 + 'ms');
+        element.classList.replace('news-pending','news-enter');
+        observer.unobserve(element);
+      }
+    });
+    for (const element of document.querySelectorAll('h1,.card,article > img,article > .body:not(:empty),article > a')) {
+      element.classList.add('news-pending');
+      observer.observe(element);
+    }
+  }
   try {
     if (id !== null) {
       const back = document.querySelector('nav a');
@@ -53,4 +73,5 @@
     }
     status.textContent = '';
   } catch {status.textContent = 'お知らせを読み込めませんでした。';}
+  finally {revealContent();}
 })();
