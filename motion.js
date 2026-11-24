@@ -104,8 +104,8 @@
           lines.delete(entry.target);
         });
       // IntersectionObserver percentage margins use width, so use viewport-height pixels.
-      // A line begins appearing after it reaches 45% of the screen from the top.
-      }, { rootMargin: `0px 0px -${Math.round(innerHeight * .55)}px 0px`, threshold: 0 });
+      // A line begins appearing after it reaches 60% of the screen from the top.
+      }, { rootMargin: `0px 0px -${Math.round(innerHeight * .4)}px 0px`, threshold: 0 });
       lines.forEach(line => {
         if (line.chars.every(char => char.classList.contains('is-readable'))) {
           lines.delete(line.first);
