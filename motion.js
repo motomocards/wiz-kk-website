@@ -16,19 +16,19 @@
     finishing = true;
     clearTimeout(window.wizIntroSafety);
     loader.classList.add('is-exiting');
-    // Reveal the logo only after the loading overlay has fully disappeared.
+    // Start the very faint silhouette while the matching background dissolves.
+    root.classList.add('intro-ready');
     setTimeout(() => {
       ready = true;
       page.inert = false;
       loader.hidden = true;
       loader.setAttribute('aria-hidden', 'true');
       root.classList.remove('intro-loading');
-      root.classList.add('intro-ready');
       setTimeout(() => {
         pendingLines.forEach(revealLine);
         pendingLines.clear();
-      }, preference.matches ? 0 : 260);
-    }, preference.matches ? 0 : 560);
+      }, preference.matches ? 0 : 800);
+    }, preference.matches ? 0 : 920);
   }
   if (!ready) page.inert = true;
   loader.querySelector('button').addEventListener('click', finishIntro);
