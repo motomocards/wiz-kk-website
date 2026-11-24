@@ -20,7 +20,10 @@ ul { padding-left: 1.35rem; }
 li + li { margin-top: .7rem; }
 a { color: #285653; text-underline-offset: .22em; }
 a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
-address { font-style: normal; }</style></head>
+address { font-style: normal; }
+footer nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+footer [aria-current="page"] { color: inherit; text-decoration: none; font-weight: 600; }
+</style></head>
 <body>
 <header><a href="/">WIZ K.K.</a><a href="/ridefuel/privacy">プライバシーポリシー</a></header>
 <main><h1><small lang="en">RideFuel</small>サポート</h1>
@@ -42,5 +45,7 @@ address { font-style: normal; }</style></head>
 <h2>運営</h2>
 <p>WIZ K.K.</p>
 </main>
-<footer><a href="/">WIZ K.K.</a><a href="/ridefuel/privacy">プライバシーポリシー</a></footer>
+<footer><a href="/">WIZ K.K.</a><nav aria-label="RideFuel"><a href="/ridefuel/support" aria-current="page">サポート</a>
+<a href="/ridefuel/terms">利用規約</a>
+<a href="/ridefuel/privacy">プライバシーポリシー</a></nav></footer>
 </body></html>

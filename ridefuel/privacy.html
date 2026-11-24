@@ -20,7 +20,10 @@ ul { padding-left: 1.35rem; }
 li + li { margin-top: .7rem; }
 a { color: #285653; text-underline-offset: .22em; }
 a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
-address { font-style: normal; }</style></head>
+address { font-style: normal; }
+footer nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+footer [aria-current="page"] { color: inherit; text-decoration: none; font-weight: 600; }
+</style></head>
 <body>
 <header><a href="/">WIZ K.K.</a><a href="/ridefuel/support">サポート</a></header>
 <main><h1><small lang="en">RideFuel</small>プライバシーポリシー</h1>
@@ -57,5 +60,7 @@ address { font-style: normal; }</style></head>
 <address>WIZ K.K.<br>住所：〒562-0024 大阪府箕面市粟生新家2-5-9<br>メール：<a href="mailto:info@wiz-kk.jp">info@wiz-kk.jp</a></address>
 <p>制定日：<time datetime="2026-11-24">2026年11月24日</time></p>
 </main>
-<footer><a href="/">WIZ K.K.</a><a href="/ridefuel/support">サポート</a></footer>
+<footer><a href="/">WIZ K.K.</a><nav aria-label="RideFuel"><a href="/ridefuel/support">サポート</a>
+<a href="/ridefuel/terms">利用規約</a>
+<a href="/ridefuel/privacy" aria-current="page">プライバシーポリシー</a></nav></footer>
 </body></html>
