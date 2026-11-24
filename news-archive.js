@@ -36,7 +36,7 @@
     if (id !== null) {
       const back = document.querySelector('nav a');
       back.href = '/news.html';
-      back.textContent = '← お知らせ一覧';
+      back.textContent = '← list';
       if (!/^wiz-post-[a-zA-Z0-9-]+$/.test(id)) throw new Error();
       const item = await load('/'+id+'.json');
       document.querySelector('h1').textContent = item.title;
